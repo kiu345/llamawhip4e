@@ -10,6 +10,7 @@
     <elements xsi:type="commands:Command" xmi:id="_tMtMsPELEe2go8AypQomeQ" elementId="com.github.kiu345.eclipse.plugin.eclipseai.main.command.4" commandName="Fix Errors" description="Asks EclipseAI to fix errors"/>
     <elements xsi:type="commands:Command" xmi:id="_Y1hcQPPsEe2JjYfRC0o-vw" elementId="com.github.kiu345.eclipse.plugin.eclipseai.main.command.5" commandName="Git Comment" description="Asks EclipseAI to generate a meaningful git commit comment "/>
   </fragments>
+
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_fW12kIrOEeW7h_qdP9N9fw" featurename="handlers" parentElementId="xpath:/">
     <elements xsi:type="commands:Handler" xmi:id="_k2L0IIrOEeW7h_qdP9N9fw" elementId="com.github.kiu345.eclipse.plugin.eclipseai.main.handler.0" contributionURI="bundleclass://com.github.kiu345.eclipse.plugin.eclipseai.main/com.github.kiu345.eclipse.eclipseai.handlers.EclipseAICodeRefactorHandler" command="_UCYfwIrOEeW7h_qdP9N9fw">
       <persistedState key="persistState" value="false"/>
@@ -24,6 +25,7 @@
     <elements xsi:type="commands:Handler" xmi:id="_x-SFUPELEe2go8AypQomeQ" elementId="com.github.kiu345.eclipse.plugin.eclipseai.main.handler.4" contributionURI="bundleclass://com.github.kiu345.eclipse.plugin.eclipseai.main/com.github.kiu345.eclipse.eclipseai.handlers.EclipseAIFixErrorsHandler" command="_tMtMsPELEe2go8AypQomeQ"/>
     <elements xsi:type="commands:Handler" xmi:id="_naVwkPPsEe2JjYfRC0o-vw" elementId="com.github.kiu345.eclipse.plugin.eclipseai.main.handler.5" contributionURI="bundleclass://com.github.kiu345.eclipse.plugin.eclipseai.main/com.github.kiu345.eclipse.eclipseai.handlers.EclipseAIGenerateGitCommentHandler" command="_Y1hcQPPsEe2JjYfRC0o-vw"/>
   </fragments>
+
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_pVgfIIrOEeW7h_qdP9N9fw" featurename="menuContributions" parentElementId="xpath:/">
     <elements xsi:type="menu:MenuContribution" xmi:id="_BducUIrPEeW7h_qdP9N9fw" elementId="com.github.kiu345.eclipse.plugin.eclipseai.main.menucontribution.1" positionInParent="after=additions" parentId="popup">
       <persistedState key="persistState" value="false"/>
@@ -37,12 +39,9 @@
       </children>
     </elements>
   </fragments>
+
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_AQJWAM2tEe2ZG5Twjghs_w" featurename="descriptors" parentElementId="xpath:/">
-    <elements xsi:type="basic:PartDescriptor" xmi:id="_CF9oIM2tEe2ZG5Twjghs_w" elementId="eclipseai.partdescriptor.chatview" label="AI Assistent Chat (old)" iconURI="platform:/plugin/com.github.kiu345.eclipse.plugin.eclipseai.main/icons/ollama32.png" category="EclipseAI" closeable="true" contributionURI="bundleclass://com.github.kiu345.eclipse.plugin.eclipseai.main/com.github.kiu345.eclipse.eclipseai.part.ChatViewPart">
-      <tags>View</tags>
-      <tags>categoryTag:EclipseAI</tags>
-    </elements>
-    <elements xsi:type="basic:PartDescriptor" xmi:id="_CF9oIM2tE86955Twjghs_w" elementId="eclipseai.partdescriptor.chatview2" label="AI Assistent Chat" iconURI="platform:/plugin/com.github.kiu345.eclipse.plugin.eclipseai.main/icons/ollama32.png" category="EclipseAI" closeable="true" contributionURI="bundleclass://com.github.kiu345.eclipse.plugin.eclipseai.main/com.github.kiu345.eclipse.eclipseai.ui.AIChatViewPart">
+    <elements xsi:type="basic:PartDescriptor" xmi:id="_CF9oIM2tE86955Twjghs_w" elementId="eclipseai.partdescriptor.chatview2" label="Assistent Chat" iconURI="platform:/plugin/com.github.kiu345.eclipse.plugin.eclipseai.main/icons/ollama32.png" category="EclipseAI" closeable="true" contributionURI="bundleclass://com.github.kiu345.eclipse.plugin.eclipseai.main/com.github.kiu345.eclipse.eclipseai.ui.AIChatViewPart">
       <tags>View</tags>
       <tags>categoryTag:EclipseAI</tags>
     </elements>

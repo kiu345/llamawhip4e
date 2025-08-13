@@ -1,6 +1,5 @@
 package com.github.kiu345.eclipse.eclipseai.ui.jobs;
 
-import java.awt.Taskbar.Feature;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
@@ -13,24 +12,29 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.preference.IPreferenceStore;
 
 import com.github.kiu345.eclipse.eclipseai.adapter.ChatAdapter;
-import com.github.kiu345.eclipse.eclipseai.adapter.ollama.OllamaAdapter;
+import com.github.kiu345.eclipse.eclipseai.adapter.ChatAdapterFactory;
+import com.github.kiu345.eclipse.eclipseai.adapter.ModelDescriptor;
+import com.github.kiu345.eclipse.eclipseai.config.AIProviderProfile;
+import com.github.kiu345.eclipse.eclipseai.config.ChatSettings;
 import com.github.kiu345.eclipse.eclipseai.messaging.AgentMsg;
 import com.github.kiu345.eclipse.eclipseai.messaging.ConversationManager;
 import com.github.kiu345.eclipse.eclipseai.messaging.Msg;
 import com.github.kiu345.eclipse.eclipseai.messaging.Msg.Source;
-import com.github.kiu345.eclipse.eclipseai.model.ModelDescriptor;
-import com.github.kiu345.eclipse.eclipseai.model.ModelDescriptor.Features;
-import com.github.kiu345.eclipse.eclipseai.prompt.Prompts;
-import com.github.kiu345.eclipse.eclipseai.services.ClientConfiguration;
 import com.github.kiu345.eclipse.eclipseai.services.tools.ToolService;
 import com.github.kiu345.eclipse.eclipseai.ui.ChatComposite;
-import com.github.kiu345.eclipse.eclipseai.ui.ChatPresenter.Settings;
 
+import dev.langchain4j.model.chat.StreamingChatModel;
 import dev.langchain4j.model.chat.response.ChatResponse;
 
+/**
+ * A {@link Job} that sends a chat request to the configured AI provider and
+ * updates the UI with the ongoing progress. The job handles the different
+ * stages of the request (thinking, tool usage, responding) and updates the
+ * {@link ChatComposite} accordingly. It also records timings and supports
+ * cancellation.
+ */
 public class AskAIJob extends Job {
 
     private static final int UPDATE_PACKET_SIZE = 64;
@@ -44,13 +48,9 @@ public class AskAIJob extends Job {
     private static final int STATE_DONE = 4;
 
     private final ILog log;
-    private final ChatAdapter adapter;
+    private final ChatAdapter<? extends StreamingChatModel> adapter;
     private final ModelDescriptor selectedModel;
-    private final ToolService toolService;
-    private final Settings settings;
     private final ConversationManager conversation;
-    private final ClientConfiguration configuration;
-    private final IPreferenceStore preferenceStore;
     private final ChatComposite view;
 
     private int state = STATE_STARTED;
@@ -66,37 +66,20 @@ public class AskAIJob extends Job {
             ModelDescriptor selectedModel,
             ConversationManager conversation,
             ToolService toolService,
-            Settings settings,
-            ClientConfiguration configuration,
-            IPreferenceStore preferenceStore
+            ChatSettings settings,
+            AIProviderProfile profile
     ) {
         super("Asking AI...");
         this.log = log;
         this.view = view;
         this.selectedModel = selectedModel;
-        this.toolService = toolService;
-        this.settings = settings;
         this.conversation = conversation;
-        this.configuration = configuration;
-        this.preferenceStore = preferenceStore;
 
-        adapter = initAdapter();
-    }
-
-    private ChatAdapter initAdapter() {
-        var config = new OllamaAdapter.Config(configuration.getBaseUrl(), 3);
-        var newAdapter = new OllamaAdapter(log, config);
-
-        String sysPrompt = preferenceStore.getString(Prompts.SYSTEM.preferenceName());
-
-        newAdapter.setToolService(toolService);
-        newAdapter.config().setSystemPrompt(sysPrompt);
-        newAdapter.config().setThinkingAllowed(settings.getThinkingAllowed() && selectedModel.features().contains(Features.THINKING));
-        newAdapter.config().setConnectTimeout(configuration.getConnectionTimoutSeconds());
-        newAdapter.config().setTimeout(configuration.getRequestTimoutSeconds());
-        newAdapter.config().setKeepAlive(configuration.getKeepAliveSeconds());
-        newAdapter.config().setTemperature(settings.getTemperatur());
-        return newAdapter;
+        adapter = ChatAdapterFactory.create(log, profile);
+        adapter.apply(settings);
+        if (settings.getToolsAllowed()) {
+            adapter.setToolService(toolService);
+        }
     }
 
     public UUID getResponeMessageId() {

@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import com.github.kiu345.eclipse.eclipseai.adapter.ChatAdapterBase.ChatCall;
+import com.github.kiu345.eclipse.eclipseai.config.ChatSettings;
 import com.github.kiu345.eclipse.eclipseai.messaging.Msg;
-import com.github.kiu345.eclipse.eclipseai.model.ModelDescriptor;
+import com.github.kiu345.eclipse.eclipseai.messaging.UserMsg;
+import com.github.kiu345.eclipse.eclipseai.services.tools.ToolService;
 
-import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
+import dev.langchain4j.model.chat.StreamingChatModel;
 
-public interface ChatAdapter {
+public interface ChatAdapter<T extends StreamingChatModel> {
 
     public class FinishHandler {
 
@@ -61,11 +63,22 @@ public interface ChatAdapter {
         }
     }
 
+    void apply(ChatSettings settings);
+
     List<ModelDescriptor> getModels();
 
-    ChatCall<OllamaStreamingChatModel> chatRequest(ModelDescriptor model, Consumer<Msg> newMessageConsumer, Collection<Msg> messages);
+    ChatCall<T> chatRequest(ModelDescriptor model, Consumer<Msg> newMessageConsumer, Collection<Msg> messages);
+
+    default Msg generate(ModelDescriptor model, UserMsg request) {
+        return generate(model, request.getMessage());
+    }
+
+    Msg generate(ModelDescriptor model, String request);
 
     default void cancelRequests() {
     };
 
+    ToolService getToolService();
+
+    void setToolService(ToolService toolservice);
 }

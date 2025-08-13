@@ -32,7 +32,7 @@ public class BrowserScripting {
             <span id="edit_area">
                 <div id="suggestions" class="chat-bubble"></div>
                 <div id="inputarea" class="chat-bubble me current" contenteditable="plaintext-only" autofocus placeholder="Ask anything, '/' for slash commands"></div>
-                <div class="context"><div class="header">Context</div><ul class="attachments file-list"></ul></div>
+                <div class="context"><div class="header">Context</div><ul id="attachments" class="attachments file-list"></ul></div>
             </span>""";
 
     public static final String MESSAGE_HTML = """

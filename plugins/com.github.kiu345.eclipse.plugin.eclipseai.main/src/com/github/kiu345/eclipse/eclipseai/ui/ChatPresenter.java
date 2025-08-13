@@ -2,9 +2,12 @@ package com.github.kiu345.eclipse.eclipseai.ui;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -12,83 +15,37 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.ui.PlatformUI;
 
-import com.github.kiu345.eclipse.eclipseai.Activator;
-import com.github.kiu345.eclipse.eclipseai.adapter.ollama.OllamaAdapter;
+import com.github.kiu345.eclipse.eclipseai.adapter.ChatAdapterFactory;
+import com.github.kiu345.eclipse.eclipseai.adapter.ModelDescriptor;
+import com.github.kiu345.eclipse.eclipseai.config.ChatSettings;
+import com.github.kiu345.eclipse.eclipseai.config.PluginConfiguration;
 import com.github.kiu345.eclipse.eclipseai.messaging.ConversationManager;
 import com.github.kiu345.eclipse.eclipseai.messaging.Msg;
 import com.github.kiu345.eclipse.eclipseai.messaging.UserMsg;
-import com.github.kiu345.eclipse.eclipseai.model.ModelDescriptor;
-import com.github.kiu345.eclipse.eclipseai.services.ClientConfiguration;
 import com.github.kiu345.eclipse.eclipseai.services.tools.ToolService;
 import com.github.kiu345.eclipse.eclipseai.ui.ChatComposite.State;
+import com.github.kiu345.eclipse.eclipseai.ui.attachment.FileAttachment;
 import com.github.kiu345.eclipse.eclipseai.ui.jobs.AskAIJob;
+import com.github.kiu345.eclipse.eclipseai.ui.util.IDEUtils;
 
 import jakarta.inject.Inject;
 
 /**
- * Business logic of the chat widget
+ * The {@code ChatPresenter} class encapsulates the business logic for the chat widget
+ * in the Eclipse AI plugin. It mediates between the UI component {@link ChatComposite}
+ * and the underlying services such as {@link ConversationManager}, {@link ToolService},
+ * and {@link ModelManager}. The presenter handles user actions (send, stop, clear,
+ * resend, remove last, refresh, copy, and save code), manages the current model
+ * selection, and coordinates asynchronous jobs to query the AI model via
+ * {@link AskAIJob}. It also supports file attachments, converting them into
+ * special markers in the prompt.
  */
 public class ChatPresenter {
-    /**
-     * Chat UI settings storage
-     */
-    public static class Settings {
-        private Boolean thinkingAllowed = true;
-        private Boolean toolsAllowed = true;
-        private Boolean webAllowed = false;
-        private Integer temperatur = 1;
-
-        public Settings() {
-            super();
-        }
-
-        public Settings(Boolean thinkingAllowed, Boolean toolsAllowed, Boolean webAllowed, Integer temperatur) {
-            super();
-            this.thinkingAllowed = thinkingAllowed;
-            this.toolsAllowed = toolsAllowed;
-            this.webAllowed = webAllowed;
-            this.temperatur = temperatur;
-        }
-
-        public Boolean getThinkingAllowed() {
-            return thinkingAllowed;
-        }
-
-        public void setThinkingAllowed(Boolean thinkingAllowed) {
-            this.thinkingAllowed = thinkingAllowed;
-        }
-
-        public Boolean getToolsAllowed() {
-            return toolsAllowed;
-        }
-
-        public void setToolsAllowed(Boolean toolsAllowed) {
-            this.toolsAllowed = toolsAllowed;
-        }
-
-        public Boolean getWebAllowed() {
-            return webAllowed;
-        }
-
-        public void setWebAllowed(Boolean webAllowed) {
-            this.webAllowed = webAllowed;
-        }
-
-        public Integer getTemperatur() {
-            return temperatur;
-        }
-
-        public void setTemperatur(Integer temperatur) {
-            this.temperatur = temperatur;
-        }
-    }
-
     /**
      * The view of this presenter
      */
@@ -102,8 +59,7 @@ public class ChatPresenter {
     @Inject
     private ConversationManager conversation;
 
-    @Inject
-    private ClientConfiguration configuration;
+    private PluginConfiguration configuration = PluginConfiguration.instance();
 
     @Inject
     private ToolService toolService;
@@ -111,18 +67,17 @@ public class ChatPresenter {
     @Inject
     private ModelManager modelManager;
 
-    private IPreferenceStore preferenceStore;
-
     private Job sendJob = null;
 
-    private Settings settings = new Settings();
+    private ChatSettings settings = new ChatSettings();
+
+    private Set<FileAttachment> attachments = new HashSet<>(10);
 
     public ChatPresenter(ChatComposite parent) {
         this.view = parent;
-        preferenceStore = Activator.getDefault().getPreferenceStore();
     }
 
-    public Settings getSettings() {
+    public ChatSettings getSettings() {
         return settings;
     }
 
@@ -130,17 +85,49 @@ public class ChatPresenter {
         return conversation;
     }
 
-    public void setSettings(Settings settings) {
+    public void setSettings(ChatSettings settings) {
         this.settings = settings;
         view.updateWith(settings);
     }
 
     public void doAttachFile() {
-        System.out.println("ChatPresenter.onAttachFile()");
+        var currentFile = IDEUtils.getCurrentEditorFile();
+        if (currentFile == null) {
+            log.info("no file found");
+            return;
+        }
+        doAttachFile(currentFile);
+    }
+
+    public void doAttachFile(IFile file) {
+        FileAttachment attachment = new FileAttachment(file);
+        attachments.add(attachment);
+        view.setInputAttachments(attachments);
+    }
+
+    private String addAttachments(String input) {
+        if (attachments.isEmpty()) {
+            return input;
+        }
+        try {
+            StringBuilder builder = new StringBuilder();
+            builder.append(input);
+            for (FileAttachment attachment : attachments) {
+                builder.append("<|FILE=%s|>".formatted(attachment.getShortName()));
+                builder.append(new String(attachment.getFile().readAllBytes(), attachment.getFile().getCharset()));
+                builder.append("</|FILE|>");
+            }
+
+            return builder.toString();
+        }
+        catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+            return input;
+        }
     }
 
     public void doSend(final UUID userMessageId, final String userPrompt, boolean predefinedPrompt) {
-        final UserMsg message = new UserMsg(userMessageId, userPrompt);
+        final UserMsg message = new UserMsg(userMessageId, addAttachments(userPrompt));
         conversation.addLast(message);
 
         sendJob = new AskAIJob(
@@ -150,8 +137,7 @@ public class ChatPresenter {
                 conversation,
                 toolService,
                 settings,
-                configuration,
-                preferenceStore
+                configuration.getDefaultProfile()
         );
 
         sendJob.addJobChangeListener(new IJobChangeListener() {
@@ -192,6 +178,7 @@ public class ChatPresenter {
 
             }
         });
+        attachments.clear();
 
         sendJob.schedule();
     }
@@ -205,6 +192,7 @@ public class ChatPresenter {
     public void doClear() {
         doStop();
         conversation.clear();
+        attachments.clear();
         view.clearChatView(true);
         view.setButtonStates(State.NEW);
     }
@@ -285,8 +273,12 @@ public class ChatPresenter {
                 monitor.beginTask("Loading models...", IProgressMonitor.UNKNOWN);
 
                 try {
-                    var config = new OllamaAdapter.Config(configuration.getBaseUrl(), 3);
-                    view.setModelList(modelManager.models(new OllamaAdapter(log, config)));
+                    if (configuration.getDefaultProfile() == null) {
+                        log.warn("no default profile defined");
+                        return Status.CANCEL_STATUS;
+                    }
+                    var adapter = ChatAdapterFactory.create(log, configuration.getDefaultProfile());
+                    view.setModelList(modelManager.models(adapter));
                 }
                 catch (Exception ex) {
                     log.error(ex.getMessage(), ex);

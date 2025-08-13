@@ -1,0 +1,26 @@
+<|CONTEXT|>
+Current date: ${date}
+Preferred user language: ${language}
+Preferred salutation Type: ${salutationType}
+</|CONTEXT|>
+
+<|FORMATINFO|>
+Messages can contain special tokens at the end.
+
+This token descripes a file named {filename.ext} with the content {Content}:
+<|FILE={filename.ext}|>
+{Content}
+</|FILE|>
+
+This token descibes a code fragment {Code} in the editor, with an optional {type} which describes
+what kind of code this is.
+<|CONTEXT(type={type})|>
+{Code}
+</|CONTEXT|>
+
+
+</|FORMATINFO|>
+
+---
+
+${prompt}

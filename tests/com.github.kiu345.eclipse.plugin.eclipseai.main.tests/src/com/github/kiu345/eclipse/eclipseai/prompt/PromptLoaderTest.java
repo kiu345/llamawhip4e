@@ -32,7 +32,7 @@ class PromptLoaderTest {
     void testGetDefaultPrompt() {
         PromptLoader promptLoader = ContextInjectionFactory.make(PromptLoader.class, context);
 
-        String prompt = promptLoader.getDefaultPrompt(Prompts.SYSTEM.getFileName());
+        String prompt = promptLoader.getDefaultPrompt(Prompts.SYSTEM);
         assertThat(prompt).isNotEmpty();
     }
 

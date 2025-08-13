@@ -66,7 +66,7 @@ public abstract class ChatAdapterBase {
          */
         public ChatCall(T chatModel, ILog log, List<ChatMessage> messages, Consumer<Msg> newMessageConsumer) {
             this.chatModel = chatModel;
-            this.messageList =Collections.synchronizedList(new ArrayList<>(Objects.requireNonNull(messages)));
+            this.messageList = Collections.synchronizedList(new ArrayList<>(Objects.requireNonNull(messages)));
             this.log = log;
             this.newMessageConsumer = Objects.requireNonNull(newMessageConsumer);
         }
@@ -82,13 +82,11 @@ public abstract class ChatAdapterBase {
         }
 
         public ChatCall<T> onPartialToolCallConsumer(Consumer<PartialToolCall> partialToolCallConsumer) {
-            System.out.println("ChatAdapterBase.ChatCall.onPartialToolCallConsumer()");
             this.partialToolCallConsumer = partialToolCallConsumer;
             return this;
         }
 
         public ChatCall<T> onCompleteToolCall(Consumer<CompleteToolCall> completeToolCallConsumer) {
-            System.out.println("ChatAdapterBase.ChatCall.onCompleteToolCall()");
             this.completeToolCallConsumer = completeToolCallConsumer;
             return this;
         }
@@ -178,7 +176,7 @@ public abstract class ChatAdapterBase {
                 final List<ToolsMsg> newHistoryMessages = new ArrayList<>();
                 handleToolRequests(call.log, call.future, completeResponse.aiMessage().toolExecutionRequests(), (e) -> {
                     newMessages.add(e);
-                    newHistoryMessages.add( new ToolsMsg(e));
+                    newHistoryMessages.add(new ToolsMsg(e));
                 });
                 newHistoryMessages.forEach(toolMessage -> newMessageConsumer.accept(toolMessage));
                 call.messageList.addAll(newMessages);
@@ -199,8 +197,8 @@ public abstract class ChatAdapterBase {
                     log.info("Canceling");
                     break;
                 }
-                log.info("tool request: "+execRequest);
-                
+                log.info("tool request: " + execRequest);
+
                 String toolResultValue = "";
 
                 try {
@@ -217,14 +215,24 @@ public abstract class ChatAdapterBase {
                     ToolExecutionResultMessage toolExecutionResultMessage = ToolExecutionResultMessage.from(execRequest, toolResultValue);
                     resultConsumer.accept(toolExecutionResultMessage);
                 }
+                else {
+                    ToolExecutionResultMessage toolExecutionResultMessage = ToolExecutionResultMessage.from(execRequest, "");
+                    resultConsumer.accept(toolExecutionResultMessage);
+                }
             }
 
         }
     }
 
-    abstract public ToolService getToolService();
+    private ToolService toolService;
+
+    public ToolService getToolService() {
+        return toolService;
+    }
+
+    public void setToolService(ToolService toolservice) {
+        this.toolService = toolservice;
+    }
 
     abstract protected void exec(StreamingChatModel model, List<ChatMessage> messageList, ChatCall<?> handler, StreamingChatResponseHandler responseHandler);
-    
-    abstract public void cancelRequests();
 }

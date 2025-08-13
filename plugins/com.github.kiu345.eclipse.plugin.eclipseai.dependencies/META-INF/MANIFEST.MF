@@ -1,10 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: eclipseai-dependencies
+Automatic-Module-Name: eclipseai.dependencies
+Bundle-Vendor: Stefan Daurer
 Bundle-SymbolicName: com.github.kiu345.eclipse.plugin.eclipseai.dependencies;singleton:=true
-Bundle-Version: 1.0.6
+Bundle-Version: 1.0.7
 Bundle-ClassPath: annotations/annotations-24.0.1.jar,
- plantuml/plantuml-1.2025.4.jar,
+ plantuml/plantuml-epl-1.2025.4.jar,
  tika/tika-core-3.1.0.jar,
  tika/tika-parser-text-module-3.1.0.jar,
  flexmark/flexmark-0.64.14-SNAPSHOT.jar,
@@ -46,7 +48,6 @@ Bundle-ClassPath: annotations/annotations-24.0.1.jar,
  flexmark/flexmark-ext-plantuml-0.64.14-SNAPSHOT.jar,
  flexmark/flexmark-ext-toc-0.64.14-SNAPSHOT.jar,
  flexmark/flexmark-ext-typographic-0.64.14-SNAPSHOT.jar
-Bundle-Vendor: Stefan Daurer
 Export-Package: .,
  com.vladsch.flexmark.ast,
  com.vladsch.flexmark.ast.util,
@@ -108,4 +109,3 @@ Require-Bundle: org.apache.commons.commons-io;bundle-version="2.15.1",
  com.fasterxml.jackson.core.jackson-databind;bundle-version="2.18.0",
  org.apache.commons.text;bundle-version="1.12.0",
  org.jsoup;bundle-version="1.18.1"
-Automatic-Module-Name: eclipseai.dependencies

@@ -1,6 +1,6 @@
 package com.github.kiu345.eclipse.eclipseai.services.fixes;
 
-import com.github.kiu345.eclipse.eclipseai.model.ModelDescriptor;
+import com.github.kiu345.eclipse.eclipseai.adapter.ModelDescriptor;
 
 import dev.langchain4j.model.chat.response.ChatResponse;
 

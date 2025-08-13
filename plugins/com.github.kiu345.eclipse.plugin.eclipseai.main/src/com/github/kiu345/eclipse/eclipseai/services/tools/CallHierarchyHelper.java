@@ -23,9 +23,6 @@ public class CallHierarchyHelper {
     @SuppressWarnings("restriction")
     private void traverseCallHierarchy(MethodWrapper[] callers, int level) {
         for (MethodWrapper caller : callers) {
-//            IMethod method = (IMethod) caller.getMember();
-//            System.out.println("  ".repeat(level) + method.getElementName());
-
             // Recurse into the callers of the current method
             traverseCallHierarchy(caller.getCalls(new NullProgressMonitor()), level + 1);
         }

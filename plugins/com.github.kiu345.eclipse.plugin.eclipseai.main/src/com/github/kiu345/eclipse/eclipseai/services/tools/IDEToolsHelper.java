@@ -19,8 +19,8 @@ public class IDEToolsHelper {
 
     public static void getProjectPreferences(IJavaProject javaProject) {
         // Get Java version
+        @SuppressWarnings("unused")
         String javaVersion = javaProject.getOption(JavaCore.COMPILER_COMPLIANCE, true);
-        System.out.println("Java Version: " + javaVersion);
 
         // Get referenced libraries
         try {
@@ -32,7 +32,6 @@ public class IDEToolsHelper {
                     libraries.add(path.toOSString());
                 }
             }
-            System.out.println("Referenced Libraries: " + libraries);
         }
         catch (Exception e) {
             throw new RuntimeException(e);
@@ -50,15 +49,7 @@ public class IDEToolsHelper {
 
     private static void listResources(IResource resource, int depth, String prefix) throws CoreException {
         // Symbols for tree branches
-//        String branch = depth > 0 ? "├── " : "";
-//        String lastBranch = depth > 0 ? "└── " : "";
         boolean isLast = isLastResource(resource);
-
-        // Choose the appropriate prefix for non-root elements
-//        String linePrefix = depth > 0 ? (isLast ? lastBranch : branch) : "";
-
-        // Print the current resource
-//        System.out.println(prefix + linePrefix + resource.getName());
 
         // If the resource is a container, list its children
         if (resource instanceof IContainer) {

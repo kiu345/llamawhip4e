@@ -4,6 +4,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -28,19 +29,21 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.PlatformUI;
 
+import com.github.kiu345.eclipse.eclipseai.adapter.ModelDescriptor;
+import com.github.kiu345.eclipse.eclipseai.adapter.ModelDescriptor.Features;
+import com.github.kiu345.eclipse.eclipseai.config.ChatSettings;
+import com.github.kiu345.eclipse.eclipseai.config.PluginConfiguration;
 import com.github.kiu345.eclipse.eclipseai.messaging.AgentMsg;
 import com.github.kiu345.eclipse.eclipseai.messaging.Msg;
 import com.github.kiu345.eclipse.eclipseai.messaging.Msg.Source;
 import com.github.kiu345.eclipse.eclipseai.messaging.ToolsMsg;
 import com.github.kiu345.eclipse.eclipseai.messaging.UserMsg;
-import com.github.kiu345.eclipse.eclipseai.model.ModelDescriptor;
-import com.github.kiu345.eclipse.eclipseai.model.ModelDescriptor.Features;
 import com.github.kiu345.eclipse.eclipseai.prompt.MessageParser;
 import com.github.kiu345.eclipse.eclipseai.ui.BrowserScripting.ScriptException;
-import com.github.kiu345.eclipse.eclipseai.ui.ChatPresenter.Settings;
 import com.github.kiu345.eclipse.eclipseai.ui.actions.CopyCodeFunction;
 import com.github.kiu345.eclipse.eclipseai.ui.actions.SaveCodeFunction;
 import com.github.kiu345.eclipse.eclipseai.ui.actions.SendPromptFunction;
+import com.github.kiu345.eclipse.eclipseai.ui.attachment.FileAttachment;
 import com.github.kiu345.eclipse.eclipseai.ui.dnd.DropManager;
 import com.github.kiu345.eclipse.eclipseai.ui.util.ComboBoxIdSelectionListener;
 
@@ -48,7 +51,10 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 
 /**
- * Single component
+ * The {@code ChatComposite} class provides a rich user interface component for interacting with an AI chat
+ * system within the Eclipse IDE. It extends {@link org.eclipse.swt.widgets.Composite} and embeds a
+ * {@link org.eclipse.swt.browser.Browser} that renders chat messages as HTML, complete with syntax
+ * highlighting and timestamps.
  */
 public class ChatComposite extends Composite {
 
@@ -93,6 +99,7 @@ public class ChatComposite extends Composite {
     private UISynchronize uiSync;
 
     private String wantedModelName = null;
+    private final PluginConfiguration config = PluginConfiguration.instance();
 
     public ChatComposite(Composite parent, String title) {
         super(parent, SWT.NONE);
@@ -128,7 +135,6 @@ public class ChatComposite extends Composite {
     }
 
     public void addInputElement() {
-        System.out.println("ChatComposite.addInputElement()");
         uiSaveRunAsync(() -> {
             try {
                 BrowserScripting.addElementContent(browser, "content", BrowserScripting.INPUT_HTML);
@@ -151,9 +157,6 @@ public class ChatComposite extends Composite {
     }
 
     private void bindActions() {
-        dropManager.registerDropTarget(browser);
-        dropManager.registerDropTarget(frmAttachBtn);
-
         frmAttachBtn.addListener(SWT.Selection, e -> presenter.doAttachFile());
         frmStopBtn.addListener(SWT.Selection, e -> presenter.doStop());
         frmClearBtn.addListener(SWT.Selection, e -> presenter.doClear());
@@ -161,6 +164,9 @@ public class ChatComposite extends Composite {
         frmRemoveLast.addListener(SWT.Selection, e -> presenter.doRemoveLast());
 
         frmRefreshBtn.addListener(SWT.Selection, e -> presenter.doRefresh());
+
+        dropManager.registerDropTarget(frmAttachBtn);
+        dropManager.setFileConsumler(presenter::doAttachFile);
     }
 
     private void createTab() {
@@ -212,15 +218,8 @@ public class ChatComposite extends Composite {
         var frmTestBtn = new Button(buttonsTab, SWT.PUSH);
         frmTestBtn.setText("Test");
         frmTestBtn.addListener(SWT.Selection, (e) -> {
-//            System.out.println("ChatComposite#frmTestBtn");
             var mgr = presenter.getConversationManager();
-//            System.out.println(mgr.messages());
-//            System.out.println("###");
-//            mgr.removeLast();
-//            System.out.println(mgr.messages());
             resetMessages(mgr.messages());
-//            setInputText(UUID.randomUUID(), "<b>hi</b>\\''soä\n\nöüß~^#\"<y^^ä^«»®");
-//            BrowserScripting.setElementContent(browser, "content", BrowserScripting.INPUT_HTML);
             addInputElement();
             setInputText("hiho");
         });
@@ -236,7 +235,7 @@ public class ChatComposite extends Composite {
 
         frmOptionSelect = new Combo(comboArea, SWT.READ_ONLY);
         frmOptionSelect.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        frmOptionSelect.setItems(new String[] { "MainConfig" });
+        frmOptionSelect.setItems(new String[] { "" + config.getDefaultProfile() });
         frmOptionSelect.select(0);
         frmOptionSelect.setEnabled(false);
 
@@ -275,10 +274,10 @@ public class ChatComposite extends Composite {
         tempLabel.setText(Messages.chat_temperature);
         frmTempSlider = new Scale(tempArea, SWT.HORIZONTAL);
         frmTempSlider.setMinimum(0);
-        frmTempSlider.setMaximum(10);
-        frmTempSlider.setIncrement(1);
-        frmTempSlider.setPageIncrement(1);
-        frmTempSlider.setSelection(1);
+        frmTempSlider.setMaximum(100);
+        frmTempSlider.setIncrement(5);
+        frmTempSlider.setPageIncrement(10);
+        frmTempSlider.setSelection(30);
         frmTempSlider.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         frmTempSlider.addListener(SWT.Selection, (e) -> {
             presenter.getSettings().setTemperatur(frmTempSlider.getSelection());
@@ -450,17 +449,6 @@ public class ChatComposite extends Composite {
             catch (ScriptException ex) {
                 log.error("error executing script in create element: " + ex.getMessage());
             }
-
-//            browser.execute("""
-//                    node = document.createElement("div");
-//                    node.setAttribute("id", "message-${id}");
-//                    node.setAttribute("class", "${cssClass}");
-//                    document.getElementById("content").appendChild(node);
-//                        """.replace("${id}", messageId.toString()).replace("${cssClass}", cssClass));
-            // Scroll down
-//            browser.execute("window.scrollTo(0, document.body.scrollHeight);");
-//            frmAttachBtn.setEnabled(false);
-//            frmStopBtn.setEnabled(true);
         });
     }
 
@@ -511,6 +499,23 @@ public class ChatComposite extends Composite {
         });
     }
 
+    public void setInputAttachments(Collection<FileAttachment> attachments) {
+        final StringBuilder attachmentHtml = new StringBuilder();
+        for (FileAttachment attachment : attachments) {
+            attachmentHtml.append("<li>");
+            attachmentHtml.append(StringEscapeUtils.escapeHtml4(attachment.getShortName()));
+            attachmentHtml.append("</li>");
+        }
+
+        uiSaveRunAsync(() -> {
+            BrowserScripting.setElementContent(browser, "attachments", attachmentHtml.toString());
+
+            // Scroll down and enable input handling
+            browser.execute("addKeyCapture();");
+            browser.execute("window.scrollTo(0, document.body.scrollHeight);");
+        });
+    }
+
     public void clearChatView(boolean addInput) {
         uiSaveRunAsync(() -> {
             frmResendBtn.setEnabled(false);
@@ -525,9 +530,7 @@ public class ChatComposite extends Composite {
             Thread.yield();
         }
 
-//        BrowserScripting.removeElementById(browser, "edit_area");
         for (Msg msg : messages) {
-//            System.out.println("adding message" + msg);
             if (!(msg instanceof ToolsMsg)) {
                 createElement(msg);
             }
@@ -599,7 +602,7 @@ public class ChatComposite extends Composite {
         return presenter;
     }
 
-    public void updateWith(final Settings settings) {
+    public void updateWith(final ChatSettings settings) {
         uiSaveRunAsync(() -> {
             frmAllowFunctions.setSelection(settings.getToolsAllowed());
             frmAllowThink.setSelection(settings.getThinkingAllowed());

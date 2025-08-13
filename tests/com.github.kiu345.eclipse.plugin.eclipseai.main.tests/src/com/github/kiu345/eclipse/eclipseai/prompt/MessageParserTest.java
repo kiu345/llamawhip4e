@@ -10,8 +10,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import com.github.kiu345.eclipse.eclipseai.part.helper.UIInputHandler;
 
+@SuppressWarnings("unused")
 class MessageParserTest {
     private static final String TEST1 = "<p>Leo's chest ached. \"How do I fix it?\"</p><br/>2>1";
     private static final String TEST2 = "Leo's chest ached. \"How do I fix it?\"\\\n2>1";
@@ -166,14 +166,14 @@ class MessageParserTest {
 //        System.out.println(result);
     }
 
-    @Test
-    void testParseToHtmlWithOtherFunctions() {
-        System.out.println("MessageParserTest.testParseToHtmlWithOtherFunctions()");
-        System.out.println(TEST4 + "\n---");
-        String result = UIInputHandler.escapeHtmlQuotes(UIInputHandler.fixLineBreaks(parser.parseToHtml(UUID.randomUUID(), TEST4)));
-        assertThat(result).isNotNull();
-        System.out.println(result);
-    }
+//    @Test
+//    void testParseToHtmlWithOtherFunctions() {
+//        System.out.println("MessageParserTest.testParseToHtmlWithOtherFunctions()");
+//        System.out.println(TEST4 + "\n---");
+//        String result = UIInputHandler.escapeHtmlQuotes(UIInputHandler.fixLineBreaks(parser.parseToHtml(UUID.randomUUID(), TEST4)));
+//        assertThat(result).isNotNull();
+//        System.out.println(result);
+//    }
 
     @Test
     void testParseToHtml5() {

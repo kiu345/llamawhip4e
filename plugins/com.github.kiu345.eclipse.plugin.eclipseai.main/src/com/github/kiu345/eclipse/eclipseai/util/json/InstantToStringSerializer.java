@@ -9,6 +9,9 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
+/**
+ * Serializes {@link java.time.Instant} objects to ISO-8601 strings in UTC in JSON.
+ */
 public class InstantToStringSerializer extends JsonSerializer<Instant> {
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter
             .ofPattern("yyyy-MM-dd'T'HH:mm:ss.n'Z'")

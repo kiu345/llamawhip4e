@@ -1,6 +1,8 @@
 package com.github.kiu345.eclipse.eclipseai.adapter.ollama;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,15 +18,17 @@ import org.eclipse.core.runtime.ILog;
 
 import com.github.kiu345.eclipse.eclipseai.adapter.ChatAdapter;
 import com.github.kiu345.eclipse.eclipseai.adapter.ChatAdapterBase;
+import com.github.kiu345.eclipse.eclipseai.adapter.ModelDescriptor;
+import com.github.kiu345.eclipse.eclipseai.adapter.ModelDescriptor.Features;
+import com.github.kiu345.eclipse.eclipseai.config.AIProviderProfile;
+import com.github.kiu345.eclipse.eclipseai.config.ChatSettings;
+import com.github.kiu345.eclipse.eclipseai.config.PluginConfiguration;
 import com.github.kiu345.eclipse.eclipseai.messaging.AgentMsg;
 import com.github.kiu345.eclipse.eclipseai.messaging.Msg;
 import com.github.kiu345.eclipse.eclipseai.messaging.SystemMsg;
 import com.github.kiu345.eclipse.eclipseai.messaging.ToolsMsg;
 import com.github.kiu345.eclipse.eclipseai.messaging.UserMsg;
-import com.github.kiu345.eclipse.eclipseai.model.ModelDescriptor;
-import com.github.kiu345.eclipse.eclipseai.model.ModelDescriptor.Features;
-import com.github.kiu345.eclipse.eclipseai.services.ClientConfiguration;
-import com.github.kiu345.eclipse.eclipseai.services.tools.ToolService;
+import com.github.kiu345.eclipse.eclipseai.prompt.PromptLoader;
 import com.google.common.collect.Lists;
 
 import dev.langchain4j.data.message.AiMessage;
@@ -35,7 +39,9 @@ import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.http.client.jdk.JdkHttpClientBuilder;
 import dev.langchain4j.model.chat.StreamingChatModel;
 import dev.langchain4j.model.chat.request.ChatRequest;
+import dev.langchain4j.model.chat.response.ChatResponse;
 import dev.langchain4j.model.chat.response.StreamingChatResponseHandler;
+import dev.langchain4j.model.ollama.OllamaChatModel;
 import dev.langchain4j.model.ollama.OllamaChatRequestParameters;
 import dev.langchain4j.model.ollama.OllamaModel;
 import dev.langchain4j.model.ollama.OllamaModelCard;
@@ -44,22 +50,40 @@ import dev.langchain4j.model.ollama.OllamaModels.OllamaModelsBuilder;
 import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
 import dev.langchain4j.model.output.Response;
 
-public class OllamaAdapter extends ChatAdapterBase implements ChatAdapter {
+/**
+ * Ollama REST API adapter
+ */
+public class OllamaAdapter extends ChatAdapterBase implements ChatAdapter<OllamaStreamingChatModel> {
 
     public static class Config {
         private String baseUrl = DEFAULT_URL;
-        private Integer temperature;
         private String systemPrompt = "You are a helpful assistant";
+
+        public static final int DEFAULT_TEMP = 30;
+        public static final int DEFAULT_REPEAT_PENALTY = 60;
+
         private Boolean thinkingAllowed = null;
-        private int connectTimeout = 10;
-        private int timeout = 60;
-        private int keepAlive = 900;
+
+        private Integer temperature = DEFAULT_TEMP;
+        private Integer repeatPenalty = DEFAULT_REPEAT_PENALTY;
+
+        private Integer connectTimeout = 10;
+        private Integer timeout = 60;
+        private Integer keepAlive = 900;
 
         public Config() {
         }
 
-        public Config(ClientConfiguration config) {
-            this(config.getApiBaseUrl(), config.getTemperature().orElse(null));
+        public Config(AIProviderProfile profile) {
+            this.baseUrl = profile.getUrlBase();
+            this.connectTimeout = profile.getConnectTimeout();
+            this.timeout = profile.getRequestTimeout();
+            this.keepAlive = profile.getKeepAlive();
+        }
+
+        public Config(String baseUrl) {
+            super();
+            this.baseUrl = baseUrl;
         }
 
         public Config(String baseUrl, Integer temperature) {
@@ -76,12 +100,20 @@ public class OllamaAdapter extends ChatAdapterBase implements ChatAdapter {
             this.baseUrl = baseUrl;
         }
 
-        public Integer getTemperature() {
-            return temperature;
+        public Optional<Integer> getTemperature() {
+            return Optional.of(temperature);
         }
 
         public void setTemperature(Integer temperature) {
             this.temperature = temperature;
+        }
+
+        public Optional<Integer> getRepeatPenalty() {
+            return Optional.of(repeatPenalty);
+        }
+
+        public void setRepeatPenalty(Integer repeatPenalty) {
+            this.repeatPenalty = repeatPenalty;
         }
 
         public String getSystemPrompt() {
@@ -116,37 +148,40 @@ public class OllamaAdapter extends ChatAdapterBase implements ChatAdapter {
             this.timeout = timeout;
         }
 
-        public int getKeepAlive() {
+        public Integer getKeepAlive() {
             return keepAlive;
         }
 
-        public void setKeepAlive(int keepAlive) {
+        public void setKeepAlive(Integer keepAlive) {
             this.keepAlive = keepAlive;
         }
     }
 
     public static final String DEFAULT_URL = "http://localhost:11434";
-    public static final int DEFAULT_TEMP = 4;
+    private static final double DIVIDER = 100d;
+    private static int MAX_RETRIES = 3;
+    private static int MODEL_LOAD_TIMEOUT = 30;
 
     private final Config config;
     private final ILog log;
-    private ToolService toolService;
+
+    public OllamaAdapter(ILog log, AIProviderProfile provider) {
+        this(log, new Config(provider));
+    }
 
     public OllamaAdapter(ILog log, Config clientConfig) {
         this.config = clientConfig;
         this.log = log;
     }
 
-    public ToolService getToolService() {
-        return toolService;
-    }
-
-    public void setToolService(ToolService toolservice) {
-        this.toolService = toolservice;
+    @Override
+    public void apply(ChatSettings settings) {
+        config.setThinkingAllowed(settings.getThinkingAllowed());
+        config.setTemperature(settings.getTemperatur());
+        config.setRepeatPenalty(settings.getRepeatPenalty());
     }
 
     public synchronized List<ModelDescriptor> getModels() {
-        System.out.println("OllamaAdapter.getModels()");
         ArrayList<ModelDescriptor> result = new ArrayList<>();
 
         String baseUrl = config.getBaseUrl() != null ? config.getBaseUrl() : DEFAULT_URL;
@@ -154,8 +189,8 @@ public class OllamaAdapter extends ChatAdapterBase implements ChatAdapter {
         OllamaModels modelsService = new OllamaModelsBuilder()
                 .httpClientBuilder(new JdkHttpClientBuilder())
                 .baseUrl(baseUrl)
-                .timeout(Duration.ofSeconds(30))
-                .maxRetries(3)
+                .timeout(Duration.ofSeconds(MODEL_LOAD_TIMEOUT))
+                .maxRetries(MAX_RETRIES)
                 .logRequests(true)
                 .logResponses(true)
                 .build();
@@ -251,6 +286,15 @@ public class OllamaAdapter extends ChatAdapterBase implements ChatAdapter {
         }
 
         if (sysMsgCount == 0 && config.getSystemPrompt() != null) {
+            String date = DateTimeFormatter.ISO_DATE.format(LocalDate.now());
+            String salutation = "informal";
+            String language = "Deutsch";
+
+            var loader = new PromptLoader(log);
+            String baseMessage = loader.getBaseTemplate();
+            String sysPrompt = config.getSystemPrompt();
+            sysPrompt = loader.replaceVariables(baseMessage, date, language, salutation).replace(PromptLoader.TEMPLATE_PROMPT, sysPrompt);
+
             messageList = Lists.asList(SystemMessage.from(config.getSystemPrompt()), messageList.toArray(ChatMessage[]::new));
         }
 
@@ -262,14 +306,16 @@ public class OllamaAdapter extends ChatAdapterBase implements ChatAdapter {
 
         String baseUrl = config.getBaseUrl() != null ? config.getBaseUrl() : DEFAULT_URL;
 
-        Optional<Integer> temperature = Optional.ofNullable(config.temperature);
+        var temperature = config.getTemperature();
+        var repeatPenalty = config.getRepeatPenalty();
         var chatModel = OllamaStreamingChatModel.builder()
                 .baseUrl(baseUrl)
                 .httpClientBuilder(httpBuilder)
                 .modelName(model.model())
                 .think(enableThinking)
                 .returnThinking(true)
-                .temperature(temperature.orElse(DEFAULT_TEMP) / 10d)
+                .temperature(temperature.isPresent() ? temperature.get() / DIVIDER : null)
+                .repeatPenalty(repeatPenalty.isPresent() ? repeatPenalty.get() / DIVIDER : null)
                 .build();
         return new ChatCall<OllamaStreamingChatModel>(chatModel, log, messageList, newMessageConsumer);
     }
@@ -278,8 +324,8 @@ public class OllamaAdapter extends ChatAdapterBase implements ChatAdapter {
     protected void exec(StreamingChatModel model, List<ChatMessage> messageList, ChatCall<?> handler, StreamingChatResponseHandler responseHandler) {
         var paramsBuilder = OllamaChatRequestParameters.builder()
                 .keepAlive(config.getKeepAlive());
-        if (toolService != null) {
-            paramsBuilder.toolSpecifications(toolService.findTools(false).stream().map(e -> e.getTool()).toList());
+        if (getToolService() != null) {
+            paramsBuilder.toolSpecifications(getToolService().findTools(false).stream().map(e -> e.getTool()).toList());
         }
         var request = ChatRequest.builder()
                 .messages(messageList)
@@ -292,5 +338,64 @@ public class OllamaAdapter extends ChatAdapterBase implements ChatAdapter {
     @Override
     public void cancelRequests() {
 
+    }
+
+    @SuppressWarnings("unused")
+    @Override
+    public Msg generate(ModelDescriptor model, String request) {
+        var httpBuilder = new JdkHttpClientBuilder()
+                .connectTimeout(Duration.ofSeconds(config.getConnectTimeout()))
+                .readTimeout(Duration.ofSeconds(config.getTimeout()));
+
+        String baseUrl = config.getBaseUrl() != null ? config.getBaseUrl() : DEFAULT_URL;
+
+        var pluginConfig = PluginConfiguration.instance();
+
+        var temperature = config.getTemperature();
+        var repeatPenalty = config.getRepeatPenalty();
+        var chatModel = OllamaChatModel.builder()
+                .baseUrl(baseUrl)
+                .httpClientBuilder(httpBuilder)
+                .modelName(model.model())
+                .think(pluginConfig.getCcAllowThinking())
+                .returnThinking(false)
+                .temperature(0.4)
+                .repeatPenalty(1.2)
+                .topP(0.8)
+                .topK(100)
+                .numPredict(1024)
+                .timeout(Duration.ofSeconds(30))
+                .build();
+
+        ChatResponse response = chatModel
+                .chat(SystemMessage.from("""
+                        This is a code completion request form a IDE.
+                        Create a code completion ideas for code at the location ${{CURSOR}} and an optioal ${{ENDCURSOR}}!
+                        ${{ENDCURSOR}} marks the end of an text area if the user has selected a text block, it is missing otherwise.
+                        Code will replace exactly that location, do never create code that is outside this area.
+                        If requested to create documentation, do not add the source to it!
+
+                        The context of the request is provided inside <|CONTEXT|> tags:
+                        <|CONTEXT|>
+                        package demo;
+
+                        public class Demo {
+                        ${{CURSOR}}
+                        }
+
+                        </|CONTEXT|>
+
+                        Do NOT add  <|CONTEXT|>,  <|/CONTEXT|>, ${{CURSOR}} or ${{ENDCURSOR}} in the response!
+
+                        Remember: Only return the code without any markup and no other messages!
+                        The user can add a custom message at the end of the request, separated by:
+                        ---
+                                """), UserMessage.from(request));
+        if (response != null) {
+            return new AgentMsg(response.aiMessage().text());
+        }
+        else {
+            throw new IllegalStateException("response is null");
+        }
     }
 }

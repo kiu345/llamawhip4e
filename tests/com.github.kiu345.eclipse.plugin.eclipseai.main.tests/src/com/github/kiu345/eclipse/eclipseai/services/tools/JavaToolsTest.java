@@ -11,6 +11,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import com.github.kiu345.eclipse.util.MockUtils;
@@ -33,6 +34,7 @@ class JavaToolsTest {
     }
 
     @Test
+    @Tag("idetest")
     void testGetJavaSource() throws Exception {
         IWorkspace workspace = MockUtils.createIDEEnv(JavaTools.class);
         JavaTools service = ContextInjectionFactory.make(JavaTools.class, context);

@@ -8,9 +8,13 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
     private static final String BUNDLE_NAME = "com.github.kiu345.eclipse.eclipseai.ui.messages";
 
+
     public static String title;
     public static String description;
 
+    public static String preferencePage_main_title;
+    public static String preferencePage_models_title;
+    public static String preferencePage_prompts_title;
     public static String preferencePage_description;
 
     public static String button_add;
@@ -38,7 +42,6 @@ public class Messages extends NLS {
     public static String chat_resend;
     public static String chat_removeLast;
     public static String chat_clear;
-    public static String chat_test;
 
     public static String chat_config;
     public static String chat_model;
@@ -49,6 +52,8 @@ public class Messages extends NLS {
     public static String chat_allowWeb;
 
     public static String chat_refresh;
+
+
 
     static {
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);

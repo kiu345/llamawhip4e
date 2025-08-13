@@ -22,8 +22,6 @@ public class TransferHandlerFactory {
     @Inject
     private FileTransferHandler fileTransferHandler;
     @Inject
-    private UrlTransferHandler urlTransferHandler;
-    @Inject
     private TextTransferHandler textTransferHandler;
 
     private Map<Transfer, ITransferHandler> supportedTransferHandlers;
@@ -42,7 +40,6 @@ public class TransferHandlerFactory {
         map.put(localSelectionTransferHandler.getTransferType(), localSelectionTransferHandler);
         map.put(imageTransferHandler.getTransferType(), imageTransferHandler);
         map.put(fileTransferHandler.getTransferType(), fileTransferHandler);
-        map.put(urlTransferHandler.getTransferType(), urlTransferHandler);
         map.put(textTransferHandler.getTransferType(), textTransferHandler);
         return map;
     }

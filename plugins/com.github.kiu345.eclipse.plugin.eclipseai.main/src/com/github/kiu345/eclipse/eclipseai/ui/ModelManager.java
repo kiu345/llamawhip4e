@@ -8,8 +8,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.eclipse.e4.core.di.annotations.Creatable;
 
 import com.github.kiu345.eclipse.eclipseai.adapter.ChatAdapter;
-import com.github.kiu345.eclipse.eclipseai.model.ModelDescriptor;
+import com.github.kiu345.eclipse.eclipseai.adapter.ModelDescriptor;
 
+import dev.langchain4j.model.chat.StreamingChatModel;
 import jakarta.inject.Singleton;
 
 @Creatable
@@ -19,7 +20,7 @@ public class ModelManager {
     private Instant lastRefreh = Instant.now();
     private List<ModelDescriptor> modelList = new CopyOnWriteArrayList<>();
 
-    public synchronized List<ModelDescriptor> models(ChatAdapter adapter) {
+    public synchronized List<ModelDescriptor> models(ChatAdapter<? extends StreamingChatModel> adapter) {
         Instant now = Instant.now();
         if (now.until(lastRefreh, ChronoUnit.SECONDS) < 2 && !modelList.isEmpty()) {
             return modelList;

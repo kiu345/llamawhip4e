@@ -1,0 +1,6 @@
+This is a code completion request form a IDE.
+Create a code completion ideas for code at the location ${CURSOR}!
+Only return the code without any markup!
+<|CONTEXT|>
+${context}
+</|CONTEXT|>

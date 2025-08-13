@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.e4.core.di.annotations.Execute;
@@ -25,16 +22,18 @@ import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
-import com.github.kiu345.eclipse.eclipseai.part.ChatPresenter;
-import com.github.kiu345.eclipse.eclipseai.prompt.ChatMessageFactory;
 import com.github.kiu345.eclipse.eclipseai.prompt.Prompts;
+import com.github.kiu345.eclipse.eclipseai.ui.ChatPresenter;
 
-@SuppressWarnings("restriction")
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+
+@SuppressWarnings({ "restriction", "unused" })
 public class EclipseAIGenerateGitCommentHandler {
     @Inject
     private ILog logger;
-    @Inject
-    private ChatMessageFactory chatMessageFactory;
+//    @Inject
+//    private ChatMessageFactory chatMessageFactory;
     @Inject
     private ChatPresenter viewPresenter;
 
@@ -68,8 +67,8 @@ public class EclipseAIGenerateGitCommentHandler {
 
                     var patch = printChanges(git.getRepository(), stagedChanges);
 
-                    var message = chatMessageFactory.createGenerateGitCommitCommentJob(patch);
-                    viewPresenter.onSendPredefinedPrompt(Prompts.GIT_COMMENT, message);
+//                    var message = chatMessageFactory.createGenerateGitCommitCommentJob(patch);
+//                    viewPresenter.onSendPredefinedPrompt(Prompts.GIT_COMMENT, message);
                 }
 
             }

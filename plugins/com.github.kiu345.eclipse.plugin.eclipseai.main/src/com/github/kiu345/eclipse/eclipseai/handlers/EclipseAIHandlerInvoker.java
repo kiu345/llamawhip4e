@@ -18,7 +18,7 @@ public class EclipseAIHandlerInvoker {
                     break;
                 case DISCUSS:
                     ((EclipseAIDiscussCodeHandler) ContextInjectionFactory.make(
-                            Activator.getBundleContext().getBundle().loadClass(EclipseAIDiscussCodeHandler.class.getName()),
+                            Activator.getDefault().getBundle().loadClass(EclipseAIDiscussCodeHandler.class.getName()),
                             EclipseContextFactory.getServiceContext(Activator.getBundleContext())
                     )).runPrompt();
                     ;
@@ -59,6 +59,12 @@ public class EclipseAIHandlerInvoker {
                     ;
                     break;
                 case DISCUSS_SELECTED:
+                    break;
+                case BASE:
+                    break;
+                case COMPLETE:
+                    break;
+                default:
                     break;
             }
         }

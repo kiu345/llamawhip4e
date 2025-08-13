@@ -1,5 +1,7 @@
 package com.github.kiu345.eclipse.eclipseai.services.tools;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import org.eclipse.compare.CompareConfiguration;
@@ -8,17 +10,23 @@ import org.eclipse.compare.CompareUI;
 import org.eclipse.compare.contentmergeviewer.TextMergeViewer;
 import org.eclipse.compare.structuremergeviewer.DiffNode;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IPersistableElement;
+import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 
@@ -29,6 +37,76 @@ import dev.langchain4j.agent.tool.Tool;
 import jakarta.inject.Inject;
 
 public class IDETools {
+    public class StringEditorInput implements IStorageEditorInput {
+        private final String name;
+        private final String content;
+
+        public StringEditorInput(String name, String content) {
+            this.name = name;
+            this.content = content;
+        }
+
+        @Override
+        public boolean exists() {
+            return true;
+        }
+
+        @Override
+        public ImageDescriptor getImageDescriptor() {
+            return null;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public IPersistableElement getPersistable() {
+            return null;
+        }
+
+        @Override
+        public String getToolTipText() {
+            return name;
+        }
+
+        @Override
+        public <T> T getAdapter(Class<T> adapter) {
+            return null;
+        }
+
+        @Override
+        public IStorage getStorage() throws CoreException {
+            return new IStorage() {
+                @Override
+                public InputStream getContents() {
+                    return new ByteArrayInputStream(content.getBytes());
+                }
+
+                @Override
+                public IPath getFullPath() {
+                    return null;
+                }
+
+                @Override
+                public String getName() {
+                    return name;
+                }
+
+                @Override
+                public boolean isReadOnly() {
+                    return true;
+                }
+
+                @Override
+                public <T> T getAdapter(Class<T> adapter) {
+                    return null;
+                }
+            };
+        }
+    }
+
     @Inject
     private ILog log;
 
@@ -148,6 +226,37 @@ public class IDETools {
         public EditorInfo getResult() {
             return result;
         }
+    }
+
+    @Tool(
+        {
+                "Opens a new editor window in the IDE. Input needs to be well formatted with whitespaces and newlines.",
+                "Do NOT call for fragments of code. Always opens a new view, so don't use it if you haven't finished your response.",
+                "Returns OK or ERROR depending on operation. Do not repeate the tool call!"
+        }
+    )
+    public String newEditorWindow(
+            @P(required = true, value = "The name of the file") String filename,
+            @P(required = true, value = "The complete content of the file, do NOT use segments.") String fileContent
+    ) {
+        IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows();
+        if (windows.length == 0) {
+            log.error("no windows found to open view in");
+            return "{ \status\": \"ERROR\"}";
+        }
+
+        final IWorkbenchPage page = windows[0].getActivePage();
+
+        StringEditorInput input = new StringEditorInput(filename, fileContent);
+        Display.getDefault().asyncExec(() -> {
+            try {
+                page.openEditor(input, "org.eclipse.ui.DefaultTextEditor");
+            }
+            catch (PartInitException e) {
+                log.error(e.getMessage());
+            }
+        });
+        return "{ \status\": \"OK\"}";
     }
 
     @Tool(

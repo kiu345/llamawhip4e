@@ -12,15 +12,15 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.Document;
 import org.eclipse.swt.graphics.ImageData;
 
-import com.github.kiu345.eclipse.eclipseai.part.ChatPresenter;
-import com.github.kiu345.eclipse.eclipseai.part.Attachment.FileContentAttachment;
 import com.github.kiu345.eclipse.eclipseai.services.ContentTypeDetector;
+import com.github.kiu345.eclipse.eclipseai.ui.ChatPresenter;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 @Creatable
 @Singleton
+@SuppressWarnings("unused")
 public class AttachmentHelper {
     @Inject
     private ChatPresenter presenter;
@@ -33,12 +33,12 @@ public class AttachmentHelper {
         String charsetName = tika.detectCharset(Arrays.copyOf(fileContent, Math.min(fileContent.length, 4096)));
         String textContent = new String(fileContent, charsetName);
         Document document = new Document(textContent);
-        presenter.onAttachmentAdded(new FileContentAttachment(fileName, 1, document.getNumberOfLines(), textContent));
+//        presenter.onAttachmentAdded(new FileContentAttachment(fileName, 1, document.getNumberOfLines(), textContent));
     }
 
     public void handleImage(URL url) {
         ImageDescriptor imageDescriptor = ImageDescriptor.createFromURL(url);
         ImageData imageData = imageDescriptor.getImageData(100);
-        presenter.onAttachmentAdded(imageData);
+//        presenter.onAttachmentAdded(imageData);
     }
 }

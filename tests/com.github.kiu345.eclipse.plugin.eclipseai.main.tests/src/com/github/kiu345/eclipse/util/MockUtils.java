@@ -1,17 +1,15 @@
 package com.github.kiu345.eclipse.util;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.when;
+
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Dictionary;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -22,7 +20,6 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
-import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -31,205 +28,61 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.mockito.Mockito;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleException;
 import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.Version;
 import org.osgi.util.tracker.ServiceTracker;
 
 public class MockUtils {
     public static ILog createLogMock() {
-        return new ILog() {
-            @Override
-            public void removeLogListener(ILogListener listener) {
-                // FAKE NOOP
-            }
+        ILog logMock = Mockito.mock(ILog.class);
 
-            @Override
-            public void log(IStatus status) {
-                System.out.println(status.getMessage());
-            }
+        when(logMock.getBundle()).thenReturn(createBundle());
 
-            @Override
-            public Bundle getBundle() {
-                // FAKE NOOP
-                return new Bundle() {
+        doAnswer((e) -> {
+            System.out.println((String) e.getArgument(0));
+            return null;
+        }).when(logMock).log(any(IStatus.class));
 
-                    @Override
-                    public int compareTo(Bundle o) {
-                        return 0;
-                    }
+        doAnswer((e) -> {
+            System.out.println((String) e.getArgument(0));
+            return null;
+        }).when(logMock).info(anyString());
+        doAnswer((e) -> {
+            System.out.println((String) e.getArgument(0));
+            return null;
+        }).when(logMock).info(anyString(), any(Throwable.class));
 
-                    @Override
-                    public void update(InputStream input) throws BundleException {
-                        // FAKE NOOP
-                    }
+        doAnswer((e) -> {
+            System.out.println((String) e.getArgument(0));
+            return null;
+        }).when(logMock).warn(anyString());
+        doAnswer((e) -> {
+            System.out.println((String) e.getArgument(0));
+            return null;
+        }).when(logMock).warn(anyString(), any(Throwable.class));
 
-                    @Override
-                    public void update() throws BundleException {
-                        // FAKE NOOP
+        doAnswer((e) -> {
+            System.err.println((String) e.getArgument(0));
+            return null;
+        }).when(logMock).error(anyString());
+        doAnswer((e) -> {
+            System.err.println((String) e.getArgument(0));
+            return null;
+        }).when(logMock).error(anyString(), any(Throwable.class));
 
-                    }
+        return logMock;
+    }
 
-                    @Override
-                    public void uninstall() throws BundleException {
-                        // FAKE NOOP
+    public static Bundle createBundle() {
+        Bundle mockBundle = Mockito.mock(Bundle.class);
+//        when(mockBundle.getBundleId()).thenReturn(1234567890l);
+//        when(mockBundle.getVersion()).thenReturn(Version.emptyVersion);
+//        when(mockBundle.getSymbolicName()).thenReturn("mockbundle");
 
-                    }
-
-                    @Override
-                    public void stop(int options) throws BundleException {
-                        // FAKE NOOP
-                    }
-
-                    @Override
-                    public void stop() throws BundleException {
-                        // FAKE NOOP
-
-                    }
-
-                    @Override
-                    public void start(int options) throws BundleException {
-                        // FAKE NOOP
-
-                    }
-
-                    @Override
-                    public void start() throws BundleException {
-                        // FAKE NOOP
-                    }
-
-                    @Override
-                    public Class<?> loadClass(String name) throws ClassNotFoundException {
-                        return null;
-                    }
-
-                    @Override
-                    public boolean hasPermission(Object permission) {
-                        return false;
-                    }
-
-                    @Override
-                    public Version getVersion() {
-                        return null;
-                    }
-
-                    @Override
-                    public String getSymbolicName() {
-                        return "test";
-                    }
-
-                    @Override
-                    public int getState() {
-                        // FAKE NOOP
-                        return 0;
-                    }
-
-                    @Override
-                    public Map<X509Certificate, List<X509Certificate>> getSignerCertificates(int signersType) {
-                        // FAKE NOOP
-                        return null;
-                    }
-
-                    @Override
-                    public ServiceReference<?>[] getServicesInUse() {
-                        // FAKE NOOP
-                        return null;
-                    }
-
-                    @Override
-                    public Enumeration<URL> getResources(String name) throws IOException {
-                        // FAKE NOOP
-                        return null;
-                    }
-
-                    @Override
-                    public URL getResource(String name) {
-                        // FAKE NOOP
-                        return null;
-                    }
-
-                    @Override
-                    public ServiceReference<?>[] getRegisteredServices() {
-                        // FAKE NOOP
-                        return null;
-                    }
-
-                    @Override
-                    public String getLocation() {
-                        // FAKE NOOP
-                        return null;
-                    }
-
-                    @Override
-                    public long getLastModified() {
-                        // FAKE NOOP
-                        return 0;
-                    }
-
-                    @Override
-                    public Dictionary<String, String> getHeaders(String locale) {
-                        // FAKE NOOP
-                        return null;
-                    }
-
-                    @Override
-                    public Dictionary<String, String> getHeaders() {
-                        // FAKE NOOP
-                        return null;
-                    }
-
-                    @Override
-                    public Enumeration<String> getEntryPaths(String path) {
-                        // FAKE NOOP
-                        return null;
-                    }
-
-                    @Override
-                    public URL getEntry(String path) {
-                        // FAKE NOOP
-                        return null;
-                    }
-
-                    @Override
-                    public File getDataFile(String filename) {
-                        // FAKE NOOP
-                        return null;
-                    }
-
-                    @Override
-                    public long getBundleId() {
-                        // FAKE NOOP
-                        return 0;
-                    }
-
-                    @Override
-                    public BundleContext getBundleContext() {
-                        // FAKE NOOP
-                        return null;
-                    }
-
-                    @Override
-                    public Enumeration<URL> findEntries(String path, String filePattern, boolean recurse) {
-                        // FAKE NOOP
-                        return null;
-                    }
-
-                    @Override
-                    public <A> A adapt(Class<A> type) {
-                        // FAKE NOOP
-                        return null;
-                    }
-                };
-            }
-
-            @Override
-            public void addLogListener(ILogListener listener) {
-                // FAKE NOOP
-            }
-        };
+        return mockBundle;
     }
 
     public static IWorkspace createIDEEnv(Class<?> context) throws CoreException, IOException {

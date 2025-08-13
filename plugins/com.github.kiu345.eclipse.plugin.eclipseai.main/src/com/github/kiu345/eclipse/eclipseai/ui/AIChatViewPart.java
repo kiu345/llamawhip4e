@@ -33,7 +33,8 @@ import org.eclipse.ui.part.ViewPart;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kiu345.eclipse.eclipseai.Activator;
-import com.github.kiu345.eclipse.eclipseai.ui.ChatPresenter.Settings;
+import com.github.kiu345.eclipse.eclipseai.config.ChatSettings;
+import com.github.kiu345.eclipse.eclipseai.config.PluginConfiguration;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -64,6 +65,11 @@ public class AIChatViewPart extends ViewPart {
         }
     }
 
+    /**
+     * Stores configuration for a chat tab, such as the selected model, chat history,
+     * whether thinking, tools or web access are enabled, and the temperature
+     * setting for the model.
+     */
     private static class TabSettings {
         private String modelName;
         private String chat;
@@ -161,12 +167,14 @@ public class AIChatViewPart extends ViewPart {
     private ILog log;
 
     private IDialogSettings settings = Activator.getDefault().getDialogSettings();
+    private final PluginConfiguration config = PluginConfiguration.instance();
 
     @PostConstruct
     @Override
     public void createPartControl(Composite parent) {
         if (initDone) {
             // not sure if we need this, but right now it seems that this method is not called without @PostConstruct
+            // and we don't want it to run twice
             return;
         }
         initDone = true;
@@ -212,7 +220,7 @@ public class AIChatViewPart extends ViewPart {
                         log.info("restoring selected model to %s".formatted(tabSetting.getModelName()));
                         tab.setSelectedModel(tabSetting.getModelName());
                     }
-                    Settings settings = tab.getPresenter().getSettings();
+                    ChatSettings settings = tab.getPresenter().getSettings();
 
                     if (tabSetting.getTemp() != null) {
                         settings.setTemperatur(tabSetting.getTemp());
@@ -242,7 +250,7 @@ public class AIChatViewPart extends ViewPart {
             }
         }
         if (tabFolder.getItemCount() == 0) {
-            addNewChatTab(true);
+            addNewChatTab(true).setSelectedModel(config.getDefaultModel());
         }
         tabFolder.setSelection(0);
     }
@@ -286,7 +294,7 @@ public class AIChatViewPart extends ViewPart {
         addItem.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                addNewChatTab(true);
+                addNewChatTab(true).setSelectedModel(config.getDefaultModel());
                 tabFolder.setSelection(tabFolder.getItemCount() - 1);
             }
         });
@@ -305,7 +313,6 @@ public class AIChatViewPart extends ViewPart {
     /** Create a new chat tab and give it a unique name. */
     private ChatComposite addNewChatTab(boolean addInput) {
         String title = "Chat " + chatCounter.getAndIncrement();
-        System.out.println("AIChatViewPart.addNewChatTab(" + title + ")");
         ChatComposite chatComposite = new ChatComposite(tabFolder, title);
 
         ChatPresenter presenter = new ChatPresenter(chatComposite);

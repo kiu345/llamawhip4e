@@ -6,6 +6,9 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Combo;
 
+/**
+ * Listener for a {@link Combo} that forwards the selected index to an {@link IntConsumer}.
+ */
 public class ComboBoxIdSelectionListener implements SelectionListener {
     private IntConsumer consumer;
 

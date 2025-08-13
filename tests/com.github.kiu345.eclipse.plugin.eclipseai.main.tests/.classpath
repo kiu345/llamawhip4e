@@ -16,10 +16,7 @@
 	<classpathentry kind="lib" path="selenium/selenium-api-4.15.0.jar"/>
 	<classpathentry kind="lib" path="selenium/selenium-chrome-driver-4.15.0.jar"/>
 	<classpathentry kind="lib" path="selenium/selenium-chromium-driver-4.15.0.jar"/>
-	<classpathentry kind="lib" path="selenium/selenium-devtools-v117-4.15.0.jar"/>
-	<classpathentry kind="lib" path="selenium/selenium-devtools-v118-4.15.0.jar"/>
 	<classpathentry kind="lib" path="selenium/selenium-devtools-v119-4.15.0.jar"/>
-	<classpathentry kind="lib" path="selenium/selenium-devtools-v85-4.15.0.jar"/>
 	<classpathentry kind="lib" path="selenium/selenium-edge-driver-4.15.0.jar"/>
 	<classpathentry kind="lib" path="selenium/selenium-firefox-driver-4.15.0.jar"/>
 	<classpathentry kind="lib" path="selenium/selenium-http-4.15.0.jar"/>
@@ -32,6 +29,11 @@
 	<classpathentry kind="lib" path="selenium/selenium-safari-driver-4.15.0.jar"/>
 	<classpathentry kind="lib" path="selenium/selenium-support-4.15.0.jar"/>
 	<classpathentry kind="src" path="src">
+		<attributes>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="resources/">
 		<attributes>
 			<attribute name="test" value="true"/>
 		</attributes>

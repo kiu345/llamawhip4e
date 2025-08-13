@@ -3,7 +3,6 @@
 	<classpathentry exported="true" kind="lib" path="tika/tika-parser-text-module-3.1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="tika/tika-core-3.1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="annotations/annotations-24.0.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="plantuml/plantuml-1.2025.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark/src"/>
 	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-definition-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-ext-definition/src"/>
 	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-emoji-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-ext-emoji/src"/>

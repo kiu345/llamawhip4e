@@ -1,7 +1,9 @@
 package com.github.kiu345.eclipse.eclipseai.prompt;
 
 public enum Prompts {
+    BASE("base.txt", "Internal base"),
     SYSTEM("system-prompt.txt", "System"),
+    COMPLETE("codecompletion-prompt.txt", "CodeCompletion"),
     DISCUSS("discuss-prompt.txt", "Discuss"),
     DOCUMENT("document-prompt.txt", "Document"),
     FIX_ERRORS("fix-errors-prompt.txt", "Fix Errors"),
@@ -19,7 +21,7 @@ public enum Prompts {
     }
 
     public String preferenceName() {
-        return "preference.prompt." + name();
+        return "preference.prompt." + name().toLowerCase();
     }
 
     public String getFileName() {

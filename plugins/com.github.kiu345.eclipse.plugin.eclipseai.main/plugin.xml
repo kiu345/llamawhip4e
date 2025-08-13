@@ -1,31 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-  <extension point="org.eclipse.e4.workbench.model"
-    id="com.github.kiu345.eclipse.eclipseai.fragment">
-    <fragment apply="always" uri="fragment.e4xmi">
-    </fragment>
+    <extension point="org.eclipse.ui.preferencePages">
+        <page class="com.github.kiu345.eclipse.eclipseai.ui.pref.EclipseAIPreferencePage" id="com.github.kiu345.eclipse.eclipseai.preferences.ModelPreferencePage" name="EclipseAI">
+        </page>
+        <page id="com.github.kiu345.eclipse.eclipseai.preferences.PromptsPreferencePage" name="Prompts" category="com.github.kiu345.eclipse.eclipseai.preferences.ModelPreferencePage" class="com.github.kiu345.eclipse.eclipseai.ui.pref.PromptsPreferencePage">
+        </page>
+        <page id="com.github.kiu345.eclipse.eclipseai.preferences.AIProfilesPreferencePage" name="AI Provider Profiles" class="com.github.kiu345.eclipse.eclipseai.ui.pref.AIProfilesPreferencePage" category="com.github.kiu345.eclipse.eclipseai.preferences.ModelPreferencePage">
+        </page>
+    </extension>
+    <extension point="org.eclipse.core.runtime.preferences">
+        <initializer class="com.github.kiu345.eclipse.eclipseai.config.PreferenceInitializer">
+        </initializer>
+    </extension>
+    <extension point="org.eclipse.ui.commands">
+        <category description="EclipseAI Commands" id="com.github.kiu345.eclipse.eclipseai.category" name="EclipseAI">
+        </category>
+        <command categoryId="com.github.kiu345.eclipse.eclipseai.category" defaultHandler="com.github.kiu345.eclipse.eclipseai.ui.handlers.FixErrorHandler" description="Asks EclipseAI to fix errors" id="com.github.kiu345.eclipse.eclipseai.main.command.fix" name="Fix Errors"/>
+    </extension>
+    <extension point="org.eclipse.ui.menus">
+        <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+            <menu id="com.github.kiu345.eclipse.eclipseai.main.menu.jdt" label="EclipseAI" icon="icons/ollama16.png">
+                <command commandId="com.github.kiu345.eclipse.eclipseai.main.command.fix" style="push">
+                </command>
+            </menu>
+        </menuContribution>
+    </extension>
+    <extension point="org.eclipse.ui.views">
+        <category id="com.github.kiu345.eclipse.eclipseai.category" name="EclipseAI">
+        </category>
+        <stickyView id="eclipseai.partdescriptor.chatview"/>
+        <view allowMultiple="false" category="com.github.kiu345.eclipse.eclipseai.category" class="com.github.kiu345.eclipse.eclipseai.ui.AIChatViewPart" icon="icons/ollama32.png" id="eclipseai.partdescriptor.chatview" inject="true" name="Assistent Chat" restorable="true"/>
+    </extension>
+    <!--
+  <extension point="org.eclipse.jdt.ui.javaCompletionProposalComputer" id="eclipseai.partdescriptor.chatview.completion" name="EclipseAI">
+        <javaCompletionProposalComputer requiresUIThread="false" class="com.github.kiu345.eclipse.eclipseai.ui.cc.CompletionProposalComputer" needsSortingAfterFiltering="true" activate="true">
+                <partition type="__dftl_partition_content_type"/>
+                <partition type="__java_singleline_comment"/>
+                <partition type="__java_multiline_comment"/>
+                <partition type="__java_javadoc"/>
+                <partition type="__java_string"/>
+                <partition type="__java_character"/>
+                <partition type="__java_multiline_string"/>
+        </javaCompletionProposalComputer>
   </extension>
-  <extension point="org.eclipse.ui.preferencePages">
-    <page
-      class="com.github.kiu345.eclipse.eclipseai.preferences.ModelPreferencePage"
-      id="com.github.kiu345.eclipse.eclipseai.preferences.ModelPreferencePage"
-      name="EclipseAI">
-    </page>
-    <page
-      id="com.github.kiu345.eclipse.eclipseai.preferences.PromptsPreferencePage"
-      name="Prompts" category="com.github.kiu345.eclipse.eclipseai.preferences.ModelPreferencePage"
-      class="com.github.kiu345.eclipse.eclipseai.preferences.PromptsPreferencePage">
-    </page>
-   <page
-         id="com.github.kiu345.eclipse.eclipseai.preferences.AIProfilesPreferencePage"
-         name="AI Provider Profiles"
-         class="com.github.kiu345.eclipse.eclipseai.preferences.AIProfilesPreferencePage"
-         category="com.github.kiu345.eclipse.eclipseai.preferences.ModelPreferencePage">
-   </page>
-  </extension>
-  <extension point="org.eclipse.core.runtime.preferences">
-    <initializer class="com.github.kiu345.eclipse.eclipseai.preferences.PreferenceInitializer">
-    </initializer>
-  </extension>
+  -->
+    <!-- Command -->
+    <extension point="org.eclipse.ui.commands">
+        <command id="com.github.kiu345.eclipse.eclipseai.main.commands.inlinePrompt" name="Inline Prompt Eingabe" description="Öffnet ein kleines Eingabefeld am Caret"/>
+    </extension>
+    <!-- Hotkey Binding -->
+    <extension point="org.eclipse.ui.bindings">
+        <key commandId="com.github.kiu345.eclipse.eclipseai.main.commands.inlinePrompt" schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" sequence="M1+M3+A" contextId="org.eclipse.ui.textEditorScope"/>
+    </extension>
+    <!-- Command Handler -->
+    <extension point="org.eclipse.ui.handlers">
+        <handler commandId="com.github.kiu345.eclipse.eclipseai.main.commands.inlinePrompt" class="com.github.kiu345.eclipse.eclipseai.ui.cc.InlinePromptHandler"/>
+    </extension>
+<!--
+    <extension point="org.eclipse.jdt.ui.quickAssistProcessors">
+        <quickAssistProcessor class="com.github.kiu345.eclipse.eclipseai.ui.cc.LLMQuickAssistProcessor" id="com.github.kiu345.eclipse.eclipseai.ui.cc.QuickPromptAssistProcessor" name="AI Quick Assist">
+        </quickAssistProcessor>
+    </extension>
+    <extension point="org.eclipse.jdt.ui.quickFixProcessors">
+        <quickFixProcessor class="com.github.kiu345.eclipse.eclipseai.ui.cc.LLMQuickFixAssistProcessor" id="com.github.kiu345.eclipse.plugin.eclipseai.main.quickFixProcessor1" name="AI Quick Fix">
+        </quickFixProcessor>
+    </extension>
+    <extension point="org.eclipse.ui.genericeditor.contentAssistProcessors">
+        <contentAssistProcessor class="com.github.kiu345.eclipse.eclipseai.ui.cc.LLMContentAssistProcessor" contentType="org.eclipse.ui.texteditor"/>
+        <contentAssistProcessor class="com.github.kiu345.eclipse.eclipseai.ui.cc.LLMContentAssistProcessor" contentType="org.eclipse.core.runtime.text"/>
+        <contentAssistProcessor class="com.github.kiu345.eclipse.eclipseai.ui.cc.LLMContentAssistProcessor" contentType="org.eclipse.jdt.core.javaSource"/>
+        <contentAssistProcessor class="com.github.kiu345.eclipse.eclipseai.ui.cc.LLMContentAssistProcessor" contentType="org.eclipse.wst.jsdt.core.jsSource"/>
+        <contentAssistProcessor class="com.github.kiu345.eclipse.eclipseai.ui.cc.LLMContentAssistProcessor" contentType="org.eclipse.wst.css.core.css"/>
+        <contentAssistProcessor class="com.github.kiu345.eclipse.eclipseai.ui.cc.LLMContentAssistProcessor" contentType="org.eclipse.wst.html.core.htmlsource"/>
+        <contentAssistProcessor class="com.github.kiu345.eclipse.eclipseai.ui.cc.LLMContentAssistProcessor" contentType="org.eclipse.core.runtime.xml"/>
+        <contentAssistProcessor class="com.github.kiu345.eclipse.eclipseai.ui.cc.LLMContentAssistProcessor" contentType="org.eclipse.datatools.sqltools.sql.sqlsource"/>
+        <contentAssistProcessor class="com.github.kiu345.eclipse.eclipseai.ui.cc.LLMContentAssistProcessor" contentType="org.eclipse.php.core.phpSource"/>
+    </extension>
+    <extension point="org.eclipse.jdt.ui.javaCompletionProposalComputer" id="eclipseai.partdescriptor.chatview.completion" name="AI Completion">
+        <javaCompletionProposalComputer activate="true" categoryId="com.github.kiu345.eclipse.eclipseai.ui.cc.contentAssistCategory" class="com.github.kiu345.eclipse.eclipseai.ui.cc.LLMContentAssistProcessor" requiresUIThread="false"/>
+    </extension>
+-->
 </plugin>

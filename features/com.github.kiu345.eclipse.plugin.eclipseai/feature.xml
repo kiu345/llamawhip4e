@@ -2,7 +2,7 @@
 <feature
       id="com.github.kiu345.eclipse.plugin.eclipseai"
       label="EclipseAI"
-      version="1.0.6.qualifier">
+      version="1.0.7.qualifier">
 
    <description>
       EclipseAI is an Eclipse IDE plugin that integrates multiple AI functionality.
