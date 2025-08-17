@@ -1,0 +1,10 @@
+We will discuss the [content].
+When ready, reply the content and following instruction
+"What would you like to ask?"
+
+
+[content] = "
+```discuss
+${selectedText}
+```
+"

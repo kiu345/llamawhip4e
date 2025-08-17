@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="lib" path="tika/tika-parser-text-module-3.1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="tika/tika-core-3.1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="annotations/annotations-24.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="plantuml/plantuml-1.2025.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-definition-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-ext-definition/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-emoji-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-ext-emoji/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-footnotes-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-ext-footnotes/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-gfm-strikethrough-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-ext-gfm-strikethrough/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-ins-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-ext-ins/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-plantuml-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-ext-plantuml/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-superscript-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-ext-superscript/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-tables-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-ext-tables/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-toc-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-ext-toc/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-wikilink-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-ext-wikilink/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-html2md-converter-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-html2md-converter/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-util/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-ast-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-util-ast/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-builder-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-util-builder/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-collection-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-util-collection/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-data-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-util-data/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-dependency-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-util-dependency/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-format-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-util-format/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-html-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-util-html/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-misc-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-util-misc/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-options-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-util-options/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-sequence-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-util-sequence/src"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-visitor-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-util-visitor/src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

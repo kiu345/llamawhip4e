@@ -1,0 +1,145 @@
+.theme-vs-min {
+	background-color: #F3F3F3;
+}
+
+.theme-vs-min pre {
+	margin: 0.0rem;
+}
+
+.theme-vs-min .inline pre code.hljs {
+	display: block;
+	overflow-x: auto;
+}
+
+.theme-vs-min .inline code.hljs {
+	background-color: #F5F5F5;
+	border-radius: 5px;
+	border-color: #C4C4C4;
+}
+
+.theme-vs-min pre code.hljs {
+	display: block;
+	overflow-x: auto;
+	font-size: small;
+	padding: 1em;
+	white-space: pre-wrap;
+}
+
+.theme-vs-min code.hljs {
+	border: 1px solid;
+	border-radius: 5px;
+}
+
+.theme-vs-min .tooltip {
+	position: relative;
+}
+
+.theme-vs-min .tooltip .tooltip_container {
+	position: absolute;
+	width: 80px;
+	height: 100%;
+	right: 0;
+	top: -16px;
+	--overflow: visible;
+	display: inline;
+	pointer-events: none;
+}
+
+.theme-vs-min .tooltip .tooltip_container .tooltiptext {
+	visibility: hidden;
+	top: 0;
+	width: 100%;
+	text-align: center;
+	border-radius: 5px;
+	padding: 5px 0;
+	float: left;
+	/* Position the tooltip */
+	position: sticky;
+	z-index: 1;
+	opacity: 0;
+	transition: opacity 0.3s;
+	pointer-events: all;
+}
+
+.theme-vs-min .tooltip:hover .tooltip_container .tooltiptext {
+	visibility: visible;
+	opacity: 1;
+	-position: sticky;
+}
+
+ul.toolbar {
+	position: absolute;
+	margin: 0px;
+	padding: 0px;
+	background-color: #fff;
+	border: 1px solid;
+	border-radius: 5px;
+	list-style-type: none;
+}
+
+ul.toolbar li {
+	display: inline;
+}
+
+ul.toolbar li img {
+	float: left;
+	cursor: pointer;
+	width: 16px;
+	height: 16px;
+	padding: 3px;
+}
+
+.theme-vs-min .hljs {
+	background: #fff;
+	color: #000;
+	line-height: 100%;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+		Liberation Mono, Courier New, monospace;
+	font-feature-settings: normal;
+	font-variation-settings: normal;
+	font-size: 1em;
+	tab-size: 4;
+}
+
+.theme-vs-min .hljs-comment, .theme-vs-min .hljs-quote, .theme-vs-min .hljs-variable
+	{
+	color: green
+}
+
+.theme-vs-min .hljs-built_in, .theme-vs-min .hljs-keyword, .theme-vs-min .hljs-name,
+	.theme-vs-min .hljs-selector-tag, .theme-vs-min .hljs-tag {
+	color: blue
+}
+
+.theme-vs-min .hljs-addition, .theme-vs-min .hljs-attribute,
+	.theme-vs-min .hljs-literal, .theme-vs-min .hljs-section, .theme-vs-min .hljs-string,
+	.theme-vs-min .hljs-template-tag, .theme-vs-min .hljs-template-variable,
+	.theme-vs-min .hljs-title, .theme-vs-min .hljs-type {
+	color: #a31515
+}
+
+.theme-vs-min .hljs-deletion, .theme-vs-min .hljs-meta, .theme-vs-min .hljs-selector-attr,
+	.theme-vs-min .hljs-selector-pseudo {
+	color: #2b91af
+}
+
+.theme-vs-min .hljs-doctag {
+	color: gray
+}
+
+.theme-vs-min .hljs-attr {
+	color: red
+}
+
+.theme-vs-min .hljs-bullet, .theme-vs-min .hljs-link, .theme-vs-min .hljs-symbol
+	{
+	color: #00b0e8
+}
+
+.theme-vs-min .hljs-emphasis {
+	font-style: italic
+}
+
+.theme-vs-min .hljs-strong {
+	font-weight: 700
+}

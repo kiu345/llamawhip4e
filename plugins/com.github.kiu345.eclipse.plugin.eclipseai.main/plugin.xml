@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+  <extension point="org.eclipse.e4.workbench.model"
+    id="com.github.kiu345.eclipse.eclipseai.fragment">
+    <fragment apply="always" uri="fragment.e4xmi">
+    </fragment>
+  </extension>
+  <extension point="org.eclipse.ui.preferencePages">
+    <page
+      class="com.github.kiu345.eclipse.eclipseai.preferences.ModelPreferencePage"
+      id="com.github.kiu345.eclipse.eclipseai.preferences.ModelPreferencePage"
+      name="EclipseAI">
+    </page>
+    <page
+      id="com.github.kiu345.eclipse.eclipseai.preferences.PromptsPreferencePage"
+      name="Prompts" category="com.github.kiu345.eclipse.eclipseai.preferences.ModelPreferencePage"
+      class="com.github.kiu345.eclipse.eclipseai.preferences.PromptsPreferencePage">
+    </page>
+   <page
+         id="com.github.kiu345.eclipse.eclipseai.preferences.AIProfilesPreferencePage"
+         name="AI Provider Profiles"
+         class="com.github.kiu345.eclipse.eclipseai.preferences.AIProfilesPreferencePage"
+         category="com.github.kiu345.eclipse.eclipseai.preferences.ModelPreferencePage">
+   </page>
+  </extension>
+  <extension point="org.eclipse.core.runtime.preferences">
+    <initializer class="com.github.kiu345.eclipse.eclipseai.preferences.PreferenceInitializer">
+    </initializer>
+  </extension>
+</plugin>

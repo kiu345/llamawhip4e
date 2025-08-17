@@ -1,0 +1,1 @@
+hljs.registerAliases('sh', 'shell');

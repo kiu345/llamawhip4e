@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description name="EclipseAI - a AI plugin for Eclipse IDE" url="https://github.com/kiu345/eclipse-ollama-plugin">
+      EclipseAI - a AI plugin for Eclipse IDE
+   </description>
+   <feature url="features/com.github.kiu345.eclipse.eclipseai_1.0.2.202401091554.jar" id="com.github.kiu345.eclipse.eclipseai" version="1.0.2.202401091554"/>
+   <category-def name="com.github.kiu345.eclipse.eclipseai" label="EclipseAI"/>
+</site>
