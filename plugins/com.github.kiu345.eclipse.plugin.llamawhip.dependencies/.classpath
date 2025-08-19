@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="annotations/annotations-24.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="tika/tika-parser-text-module-3.1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="tika/tika-core-3.1.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="annotations/annotations-24.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="jlama/big-math-2.0.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="jlama/jackson-dataformat-yaml-2.19.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="jlama/jafama-2.3.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="jlama/jinjava-2.7.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="jlama/jctools-core-4.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="jlama/re2j-1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="jlama/jlama-core-0.8.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark/src"/>
 	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-definition-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-ext-definition/src"/>
 	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-emoji-0.64.14-SNAPSHOT.jar" sourcepath="/flexmark-ext-emoji/src"/>

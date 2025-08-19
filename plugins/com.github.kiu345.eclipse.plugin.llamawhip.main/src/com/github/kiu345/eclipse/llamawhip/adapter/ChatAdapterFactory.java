@@ -2,6 +2,7 @@ package com.github.kiu345.eclipse.llamawhip.adapter;
 
 import org.eclipse.core.runtime.ILog;
 
+import com.github.kiu345.eclipse.llamawhip.adapter.jlama.JLamaAdapter;
 import com.github.kiu345.eclipse.llamawhip.adapter.local.LocalAIAdapter;
 import com.github.kiu345.eclipse.llamawhip.adapter.ollama.OllamaAdapter;
 import com.github.kiu345.eclipse.llamawhip.adapter.openai.OpenAIAdapter;
@@ -32,6 +33,8 @@ public class ChatAdapterFactory {
 //                return GithubCopilotAdapter.validate(provider);
             case LOCALAI:
                 return LocalAIAdapter.validate(provider);
+            case JLAMA:
+                return JLamaAdapter.validate(provider);
             case OLLAMA:
                 return OllamaAdapter.validate(provider);
             case OPENAI:
@@ -47,6 +50,8 @@ public class ChatAdapterFactory {
 //                return new GithubCopilotAdapter(log, provider);
             case LOCALAI:
                 return new LocalAIAdapter(log, provider);
+            case JLAMA:
+                return new JLamaAdapter(log, provider);
             case OLLAMA:
                 return new OllamaAdapter(log, provider);
             case OPENAI:

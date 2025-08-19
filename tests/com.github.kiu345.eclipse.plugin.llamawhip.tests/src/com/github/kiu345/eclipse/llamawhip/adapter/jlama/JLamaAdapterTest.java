@@ -1,4 +1,4 @@
-package com.github.kiu345.eclipse.llamawhip.adapter.ollama;
+package com.github.kiu345.eclipse.llamawhip.adapter.jlama;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -11,11 +11,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.mockito.Mockito;
 
 import com.github.kiu345.eclipse.llamawhip.adapter.AbstractAdapterTest;
@@ -28,24 +26,19 @@ import com.github.kiu345.eclipse.llamawhip.prompt.PromptLoader;
 import com.github.kiu345.eclipse.llamawhip.prompt.Prompts;
 import com.github.kiu345.eclipse.util.MockUtils;
 
-@EnabledIfEnvironmentVariable(named = OllamaAdapterTest.ENV_OLLAMA_URL, matches = "http.*", disabledReason = "OLLAMA_URL not defined")
-@Tag("adapter")
-class OllamaAdapterTest extends AbstractAdapterTest {
+import dev.langchain4j.data.message.SystemMessage;
+import dev.langchain4j.data.message.UserMessage;
+import dev.langchain4j.model.chat.ChatModel;
+import dev.langchain4j.model.chat.response.ChatResponse;
+import dev.langchain4j.model.jlama.JlamaChatModel;
 
-    public static final String ENV_OLLAMA_URL = "OLLAMA_URL";
-    private String serverURL;
+class JLamaAdapterTest extends AbstractAdapterTest {
+
+    private static final String chatModel = "tjake/Llama-3.2-1B-Instruct-JQ4";
 
     @BeforeEach
     void setUp() throws Exception {
-        serverURL = System.getenv(ENV_OLLAMA_URL);
     }
-
-    @AfterEach
-    void tearDown() throws Exception {
-    }
-
-    private static String chatModel = "qwen3:4b";
-    private static String generateModel = "qwen3:4b";
 
     @Test
     void testChatAdapterSupport() {
@@ -53,40 +46,45 @@ class OllamaAdapterTest extends AbstractAdapterTest {
 
         AIProviderProfile profile = new AIProviderProfile();
         profile.setId(UUID.randomUUID());
-        profile.setProvider(AIProvider.OLLAMA);
+        profile.setProvider(AIProvider.JLAMA);
+        profile.setUrlBase(chatModel);
 
         var adapter = ChatAdapterFactory.create(log, profile);
-        assertThat(adapter).isNotNull().isExactlyInstanceOf(OllamaAdapter.class);
+        assertThat(adapter).isNotNull().isExactlyInstanceOf(JLamaAdapter.class);
     }
 
     @Test
     void testGetModels() throws Exception {
-
-        var config = new OllamaAdapter.Config(serverURL, null);
+        var config = new JLamaAdapter.Config();
+        config.setModels("tjake/Llama-3.2-1B-Instruct-JQ4");
         ILog log = MockUtils.createLogMock();
 
-        OllamaAdapter adapter = new OllamaAdapter(log, config);
+        JLamaAdapter adapter = new JLamaAdapter(log, config);
 
-        var ollamaModels = adapter.getModels();
-        assertThat(ollamaModels).isNotEmpty();
-
-        var model = ollamaModels.stream().filter(e -> chatModel.equals(e.model())).findAny().orElse(null);
+        var models = adapter.getModels();
+        assertThat(models).isNotEmpty();
+        var model = models.stream().filter(e -> chatModel.equals(e.model())).findAny().orElse(null);
         assertThat(model).isNotNull();
-
     }
 
     @Test
     void testChat() throws Exception {
+        PluginConfiguration configMock = Mockito.mock(PluginConfiguration.class);
 
-        var config = new OllamaAdapter.Config(serverURL, null);
+        PluginConfiguration.inject(configMock);
+
+        PluginConfiguration.inject(configMock);
+
+        var config = new JLamaAdapter.Config();
+        config.setModels(chatModel);
         ILog log = MockUtils.createLogMock();
 
-        OllamaAdapter adapter = new OllamaAdapter(log, config);
+        JLamaAdapter adapter = new JLamaAdapter(log, config);
 
         var models = adapter.getModels();
 
         var model = models.stream().filter(e -> chatModel.equals(e.model())).findAny().get();
-        assertThat(model).isNotNull();
+        assertThat(model).isNotNull().hasFieldOrPropertyWithValue("model", chatModel);
 
         URL baseUrl = getClass().getClassLoader().getResource("prompts/");
         assertThat(baseUrl).isNotNull();
@@ -120,7 +118,7 @@ class OllamaAdapterTest extends AbstractAdapterTest {
                 })
                 .exec();
 
-        var result = future.orTimeout(15, TimeUnit.SECONDS).join();
+        var result = future.orTimeout(60, TimeUnit.SECONDS).join();
         assertThat(result.isOK()).isTrue();
         assertThat(result.getMessage()).isEqualTo("OK");
     }
@@ -131,14 +129,15 @@ class OllamaAdapterTest extends AbstractAdapterTest {
 
         PluginConfiguration.inject(configMock);
 
-        var config = new OllamaAdapter.Config(serverURL, null);
+        var config = new JLamaAdapter.Config();
+        config.setModels(chatModel);
         ILog log = MockUtils.createLogMock();
 
-        OllamaAdapter adapter = new OllamaAdapter(log, config);
+        JLamaAdapter adapter = new JLamaAdapter(log, config);
 
         var models = adapter.getModels();
 
-        var model = models.stream().filter(e -> generateModel.equals(e.model())).findAny().get();
+        var model = models.stream().filter(e -> chatModel.equals(e.model())).findAny().orElse(null);
 
         URL baseUrl = getClass().getClassLoader().getResource("prompts/");
         assertThat(baseUrl).isNotNull();
@@ -152,27 +151,46 @@ class OllamaAdapterTest extends AbstractAdapterTest {
         var systemPrompt = promptLoader.getDefaultPrompt(Prompts.SYSTEM, date, language, salutation);
         assertThat(systemPrompt).isNotEmpty();
 
-        UserMsg message = new UserMsg("Welches Datum haben wir");
-
         adapter.config().setSystemPrompt(systemPrompt);
         adapter.config().setThinkingAllowed(false);
         System.out.println("--------------------------------");
 
-        message = new UserMsg("""
-                This is a code completion request form a IDE.
-                Create a code completion ideas for code at the location ${CURSOR}!
-                Only return the code without any markup!
-                <|CONTEXT|>
-                %s
-                        ${CURSOR}
-                %s
-                </|CONTEXT|>
-                """.formatted(TEST_JAVA_PREFIX, TEST_JAVA_SUFFIX));
+//        var message = new UserMsg("""
+//                This is a code completion request form a IDE.
+//                Create a code completion ideas for code at the location ${CURSOR}!
+//                Only return the code without any markup!
+//                <|CONTEXT|>
+//                %s
+//                        ${CURSOR}
+//                %s
+//                </|CONTEXT|>
+//                """.formatted(TEST_JAVA_PREFIX, TEST_JAVA_SUFFIX));
+        var message = new UserMsg("""
+                Write a short java demo file.
+                """);
 
         adapter.config().setSystemPrompt(systemPrompt);
         adapter.config().setThinkingAllowed(true);
         var response = adapter.generate(model, message.getMessage());
+        System.out.println(response);
         assertThat(response.getMessage()).isNotEmpty();
+    }
+
+    @Test
+    @Disabled
+    void test() {
+
+        ChatModel model = JlamaChatModel.builder()
+                .modelName("tjake/Llama-3.2-1B-Instruct-JQ4")
+                .temperature(0.3f)
+                .build();
+
+        ChatResponse chatResponse = model.chat(
+                SystemMessage.from("You are helpful chatbot who is a java expert."),
+                UserMessage.from("Write a java program to print hello world.")
+        );
+
+        System.out.println("\n" + chatResponse.aiMessage().text() + "\n");
     }
 
 }

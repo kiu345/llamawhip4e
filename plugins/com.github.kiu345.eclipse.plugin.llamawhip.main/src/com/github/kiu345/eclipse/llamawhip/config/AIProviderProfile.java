@@ -9,7 +9,8 @@ public class AIProviderProfile {
     private AIProvider provider;
     private String urlBase;
     private String apiPath;
-    private String modelApiPath;
+    private String modelPath;
+    private String modelNames;
     private String apiKey;
     private int connectTimeout = 15;
     private int requestTimeout = 60;
@@ -73,12 +74,12 @@ public class AIProviderProfile {
         this.apiPath = apiPath;
     }
 
-    public String getModelApiPath() {
-        return modelApiPath;
+    public String getModelPath() {
+        return modelPath;
     }
 
-    public void setModelApiPath(String modelApiPath) {
-        this.modelApiPath = modelApiPath;
+    public void setModelPath(String modelApiPath) {
+        this.modelPath = modelApiPath;
     }
 
     public String getApiKey() {
@@ -129,8 +130,30 @@ public class AIProviderProfile {
             case OLLAMA -> {
                 urlBase = "http://localhost:11434";
                 apiPath = "/api";
-                modelApiPath = "/api/tags";
+                modelPath = "/api/tags";
                 apiKey = "ollama";
+                connectTimeout = 15;
+                requestTimeout = 180;
+                keepAlive = null;
+                organization = "";
+                endpoint = "";
+            }
+            case LOCALAI -> {
+                urlBase = "http://localhost:8080";
+                apiPath = "/v1";
+                modelPath = "";
+                apiKey = "localai";
+                connectTimeout = 15;
+                requestTimeout = 180;
+                keepAlive = null;
+                organization = "";
+                endpoint = "";
+            }
+            case JLAMA -> {
+                urlBase = "";
+                apiPath = "";
+                modelPath = "./models";
+                apiKey = "";
                 connectTimeout = 15;
                 requestTimeout = 180;
                 keepAlive = null;
@@ -140,7 +163,7 @@ public class AIProviderProfile {
             case OPENAI -> {
                 urlBase = "";
                 apiPath = "";
-                modelApiPath = "";
+                modelPath = "";
                 apiKey = "";
                 connectTimeout = 30;
                 requestTimeout = 90;
@@ -151,7 +174,7 @@ public class AIProviderProfile {
             default -> {
                 urlBase = "";
                 apiPath = "";
-                modelApiPath = "";
+                modelPath = "";
                 apiKey = "";
                 connectTimeout = 15;
                 requestTimeout = 180;
@@ -169,7 +192,7 @@ public class AIProviderProfile {
 
     @Override
     public int hashCode() {
-        return Objects.hash(apiKey, apiPath, connectTimeout, endpoint, id, keepAlive, modelApiPath, name, organization, provider, requestTimeout, urlBase);
+        return Objects.hash(apiKey, apiPath, connectTimeout, endpoint, id, keepAlive, modelPath, modelNames, name, organization, provider, requestTimeout, urlBase);
     }
 
     @Override
@@ -182,7 +205,7 @@ public class AIProviderProfile {
         }
         AIProviderProfile other = (AIProviderProfile) obj;
         return Objects.equals(apiKey, other.apiKey) && Objects.equals(apiPath, other.apiPath) && connectTimeout == other.connectTimeout && Objects.equals(endpoint, other.endpoint)
-                && Objects.equals(id, other.id) && Objects.equals(keepAlive, other.keepAlive) && Objects.equals(modelApiPath, other.modelApiPath)
+                && Objects.equals(id, other.id) && Objects.equals(keepAlive, other.keepAlive) && Objects.equals(modelPath, other.modelPath) && Objects.equals(modelNames, other.modelNames)
                 && Objects.equals(name, other.name) && Objects.equals(organization, other.organization) && provider == other.provider && requestTimeout == other.requestTimeout
                 && Objects.equals(urlBase, other.urlBase);
     }

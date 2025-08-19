@@ -19,6 +19,7 @@
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-local-ai-1.4.0-beta10-SNAPSHOT.jar" sourcepath="/langchain4j-local-ai/src/main/java"/>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-mcp-1.4.0-beta10-SNAPSHOT.jar" sourcepath="/langchain4j-mcp/src/main/java"/>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-ollama-1.4.0-SNAPSHOT.jar" sourcepath="/langchain4j-ollama/src/main/java"/>
+	<classpathentry exported="true" kind="lib" path="jars/langchain4j-jlama-1.4.0-beta10-SNAPSHOT.jar" sourcepath="/langchain4j-jlama/src/main/java"/>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-open-ai-1.4.0-SNAPSHOT.jar" sourcepath="/langchain4j-open-ai/src/main/java"/>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-open-ai-official-1.4.0-beta10-SNAPSHOT.jar" sourcepath="/langchain4j-open-ai-official/src/main/java"/>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-web-search-engine-google-custom-1.4.0-beta10-SNAPSHOT.jar" sourcepath="/langchain4j-web-search-engine-google-custom/src/main/java"/>

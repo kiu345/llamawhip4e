@@ -1,7 +1,7 @@
 # LlamaWhip
 <p align="center"><img src="src/website/llamawhip-transp.png" width="400"></p>
 
-This was initial a fork of [AssistAI](https://github.com/gradusnikov/eclipse-chatgpt-plugin) with focus on Ollama usage (LocalAI, ChatGPT and Copilot in alpha (Alpaca?) stage) with some features found on the net. It makes heavy usage of the [langchain4j](https://docs.langchain4j.dev) library for model interaction, so most of their supported providers would be a option in the future.
+This was initial a fork of [AssistAI](https://github.com/gradusnikov/eclipse-chatgpt-plugin) with focus on OnPremise usage, so Ollama/LocalAI/JLama are the primary supported backends - but other cloud providers will be supported as well (ChatGPT and Copilot are in alpha (Alpaca?) stage) with some features found on the net. It makes heavy usage of the [langchain4j](https://docs.langchain4j.dev) library for model interaction, so most of their supported providers would be a option in the future.
 
 The plugin brings you a `Large Language Model (LLM)` assistant into your Eclipse IDE.
 
@@ -24,6 +24,15 @@ _Why that name? There are many llamas in the AI world, a whip is used to make an
 - Switch between defined LLMs per request
 
 You can also pose general questions to LLM, just like with the regular LLM interfaces.
+
+
+| Provider    | Support  |
+|-------------|----------|
+| Ollama      | Working  |
+| JLama       | Preview  |
+| LocalAI     | InDev    |
+| GitHub      | Planning |
+| ChatGPT     | Planning |
 
 ## Installation
 
@@ -48,7 +57,6 @@ Add the *LlamaWhip Chat* to your IDE:
 <p align="center"><img src="src/website/in-editor-prompt.png" width="500"></p>
 
 Press CTRL-ALT-A to open a small inline code generation prompt
-
 
 Press "Attach" in the chat window or drop files on the button to add them to your message (do not add too many/too big, they will be added to the chat request directly)
 

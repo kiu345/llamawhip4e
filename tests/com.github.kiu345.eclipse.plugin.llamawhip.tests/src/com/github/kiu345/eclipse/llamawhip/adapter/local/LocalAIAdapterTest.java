@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Set;
 
 import org.eclipse.core.runtime.ILog;
 import org.junit.jupiter.api.AfterEach;
@@ -17,6 +18,7 @@ import org.mockito.Mockito;
 
 import com.github.kiu345.eclipse.llamawhip.adapter.AbstractAdapterTest;
 import com.github.kiu345.eclipse.llamawhip.adapter.ModelDescriptor;
+import com.github.kiu345.eclipse.llamawhip.adapter.ModelDescriptor.Features;
 import com.github.kiu345.eclipse.llamawhip.config.PluginConfiguration;
 import com.github.kiu345.eclipse.llamawhip.messaging.UserMsg;
 import com.github.kiu345.eclipse.llamawhip.prompt.PromptLoader;
@@ -68,7 +70,7 @@ class LocalAIAdapterTest extends AbstractAdapterTest {
 
         LocalAIAdapter adapter = new LocalAIAdapter(log, config);
 
-        var model = new ModelDescriptor("qwen3-8b", "localai");
+        var model = new ModelDescriptor("qwen3-8b", "localai", Set.of(Features.CHAT));
 
         URL baseUrl = getClass().getClassLoader().getResource("prompts/");
         assertThat(baseUrl).isNotNull();

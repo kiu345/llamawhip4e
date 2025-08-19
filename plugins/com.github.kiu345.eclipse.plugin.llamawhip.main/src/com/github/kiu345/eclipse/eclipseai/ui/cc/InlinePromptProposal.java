@@ -1,5 +1,6 @@
 package com.github.kiu345.eclipse.eclipseai.ui.cc;
 
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +22,7 @@ import org.eclipse.swt.widgets.Text;
 
 import com.github.kiu345.eclipse.llamawhip.adapter.ChatAdapterFactory;
 import com.github.kiu345.eclipse.llamawhip.adapter.ModelDescriptor;
+import com.github.kiu345.eclipse.llamawhip.adapter.ModelDescriptor.Features;
 import com.github.kiu345.eclipse.llamawhip.config.PluginConfiguration;
 import com.github.kiu345.eclipse.llamawhip.messaging.UserMsg;
 
@@ -192,7 +194,7 @@ public class InlinePromptProposal {
                         + StringUtils.substring(content, offset + length);
 
         var adapter = ChatAdapterFactory.create(log, profile);
-        var model = new ModelDescriptor(modelName, profile.getProvider().getInternalName());
+        var model = new ModelDescriptor(modelName, profile.getProvider().getInternalName(), Set.of(Features.CHAT));
 
         UserMsg request = new UserMsg("""
                 <|CONTEXT|>

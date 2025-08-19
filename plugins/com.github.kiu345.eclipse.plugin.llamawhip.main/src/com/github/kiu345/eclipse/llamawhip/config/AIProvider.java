@@ -3,6 +3,7 @@ package com.github.kiu345.eclipse.llamawhip.config;
 public enum AIProvider {
     OLLAMA("ollama", "Ollama", "Lokale oder Remote LLMs über Ollama API", "https://ollama.com"),
     LOCALAI("localai", "LocalAI", "On-Premise AI API Server", "https://localai.io"),
+    JLAMA("jlama", "JLama", "LLM inference engine for Java", "https://github.com/tjake/Jlama"),
     OPENAI("openai", "OpenAI ChatGPT", "OpenAI API für GPT-Modelle", "https://chatgpt.com"),
 //    GITHUB_COPILOT("github", "GitHub Copilot", "GitHub Copilot für KI-unterstütztes Coding", "https://github.com/copilot")
     ;

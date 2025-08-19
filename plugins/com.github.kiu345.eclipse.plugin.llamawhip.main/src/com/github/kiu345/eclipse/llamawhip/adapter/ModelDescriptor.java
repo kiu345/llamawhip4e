@@ -18,8 +18,8 @@ public record ModelDescriptor(
         EMBEDDING
     }
     
-    public ModelDescriptor(String model, String provider) {
-        this(null, model, null, provider, null, null);
+    public ModelDescriptor(String model, String provider, Set<Features> features) {
+        this(null, model, null, provider, model, features);
     }
 
     @Override

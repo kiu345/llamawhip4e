@@ -67,6 +67,8 @@ public class AIProfilesPreferencePage extends PreferencePage implements IWorkben
     private Hyperlink lblDescription;
     private Group detailGroup;
 
+    private Label lblBaseData;
+
     public AIProfilesPreferencePage() {
         setTitle(Messages.preferencePage_models_title);
         setDescription(Messages.preferencePage_models_descr);
@@ -272,7 +274,8 @@ public class AIProfilesPreferencePage extends PreferencePage implements IWorkben
             }
         });
 
-        new Label(detailGroup, SWT.NONE).setText(Messages.label_urlBase);
+        lblBaseData = new Label(detailGroup, SWT.NONE);
+        lblBaseData.setText(Messages.label_urlBase);
         txtUrlBase = new Text(detailGroup, SWT.BORDER);
         txtUrlBase.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
         txtUrlBase.addModifyListener(e -> {
@@ -289,11 +292,13 @@ public class AIProfilesPreferencePage extends PreferencePage implements IWorkben
                     return;
                 }
                 AIProvider provider = AIProvider.values()[comboProvider.getSelectionIndex()];
+                selectedProfile.setProvider(provider);
                 switch (provider) {
                     case OPENAI -> selectedProfile.setOrganization(txtProviderSpecific.getText());
 //                    case GITHUB_COPILOT -> selectedProfile.setEndpoint(txtProviderSpecific.getText());
-                    case OLLAMA -> selectedProfile.setModelApiPath(txtProviderSpecific.getText());
-                    case LOCALAI -> selectedProfile.setModelApiPath(txtProviderSpecific.getText());
+                    case OLLAMA -> selectedProfile.setModelPath(txtProviderSpecific.getText());
+                    case JLAMA -> selectedProfile.setModelPath(txtProviderSpecific.getText());
+                    case LOCALAI -> selectedProfile.setModelPath(txtProviderSpecific.getText());
                     default -> throw new IllegalArgumentException("Unexpected value: " + provider);
                 }
             }
@@ -383,6 +388,7 @@ public class AIProfilesPreferencePage extends PreferencePage implements IWorkben
         txtApiPath.setEnabled(provider == AIProvider.OLLAMA);
         lblDescription.setText("" + provider.getDescription());
         lblDescription.setHref("" + provider.getUrl());
+        lblBaseData.setText(Messages.label_urlBase);
 
         // Provider-spezifisches Feld
         switch (provider) {
@@ -399,12 +405,18 @@ public class AIProfilesPreferencePage extends PreferencePage implements IWorkben
             case OLLAMA -> {
                 lblProviderSpecific.setText(Messages.label_pathModels);
                 txtProviderSpecific.setEnabled(true);
-                txtProviderSpecific.setText(defaultString(selectedProfile != null ? selectedProfile.getModelApiPath() : ""));
+                txtProviderSpecific.setText(defaultString(selectedProfile != null ? selectedProfile.getModelPath() : ""));
+            }
+            case JLAMA -> {
+                lblBaseData.setText("Modelnames");
+                lblProviderSpecific.setText("Cachepath");
+                txtProviderSpecific.setEnabled(true);
+                txtProviderSpecific.setText(defaultString(selectedProfile != null ? selectedProfile.getModelPath() : ""));
             }
             case LOCALAI -> {
                 lblProviderSpecific.setText(Messages.label_pathModels);
                 txtProviderSpecific.setEnabled(true);
-                txtProviderSpecific.setText(defaultString(selectedProfile != null ? selectedProfile.getModelApiPath() : ""));
+                txtProviderSpecific.setText(defaultString(selectedProfile != null ? selectedProfile.getModelPath() : ""));
             }
             default -> {
                 lblProviderSpecific.setText("");
