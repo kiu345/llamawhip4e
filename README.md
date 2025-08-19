@@ -5,9 +5,9 @@ This was initial a fork of [AssistAI](https://github.com/gradusnikov/eclipse-cha
 
 The plugin brings you a `Large Language Model (LLM)` assistant into your Eclipse IDE.
 
-<p align="center"><img src="src/website/screenshot.png" width="600"></p>
+<p align="center"><img src="src/website/screenshot.png" width="500"><img src="src/website/screenshot2.png" width="500"></p>
 
-_Why that name? There are many llamas in the AI world, a whip is used to make animals to do what you want, and according to some companies it is good practice to whip llamas *** ... ;-) _
+_Why that name? There are many llamas in the AI world, a whip is used to make animals to do what you want, and according to some [companies](https://www.youtube.com/watch?v=HaF-nRS_CWM) it is good practice to whip llamas *** ... ;-) _
 
 ## Features
 
@@ -18,10 +18,12 @@ _Why that name? There are many llamas in the AI world, a whip is used to make an
 - Using the function call feature LlamaWhip can:
   - use related source code to better understand the context
   - perform a web search using (selectable per query) 
-  - read a content of a web pag
+  - read a content of a web page
   - open new file/compare editor
+- Theme support (light and dark right now)
 - Create contexts for the LLM that include source files
 - Switch between defined LLMs per request
+- Persistent chat history
 
 You can also pose general questions to LLM, just like with the regular LLM interfaces.
 

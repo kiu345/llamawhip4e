@@ -54,9 +54,10 @@ import com.github.kiu345.eclipse.llamawhip.adapter.ModelDescriptor;
 import com.github.kiu345.eclipse.llamawhip.config.AIProfileStorage;
 import com.github.kiu345.eclipse.llamawhip.config.AIProviderProfile;
 import com.github.kiu345.eclipse.llamawhip.config.PluginConfiguration;
+import com.github.kiu345.eclipse.llamawhip.config.UITheme;
 import com.github.kiu345.eclipse.llamawhip.ui.Messages;
 
-public class EclipseAIPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
+public class LlamaWhipPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
     private class PreferenceListener implements org.eclipse.jface.util.IPropertyChangeListener {
 
@@ -80,6 +81,7 @@ public class EclipseAIPreferencePage extends PreferencePage implements IWorkbenc
     private TableViewer viewer;
     private final List<Entry> entries = new ArrayList<>();
     private Combo languageCombo;
+    private Combo themeCombo;
     private Combo defaultProviderCombo;
     private Combo defaultModelCombo;
     private Combo ccModelCombo;
@@ -133,6 +135,12 @@ public class EclipseAIPreferencePage extends PreferencePage implements IWorkbenc
         languageCombo.setItems(new String[] { "Default", "Deutsch", "Englisch" });
         languageCombo.select(0);
         GridDataFactory.fillDefaults().grab(true, false).applyTo(languageCombo);
+
+        new Label(generalGroup, SWT.NONE).setText("Theme:");
+        themeCombo = new Combo(generalGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
+        themeCombo.setItems(List.of(UITheme.values()).stream().map(e -> e.title()).toArray(String[]::new));
+        themeCombo.select(0);
+        GridDataFactory.fillDefaults().grab(true, false).applyTo(themeCombo);
 
         new Label(generalGroup, SWT.NONE).setText("Default provider:");
         defaultProviderCombo = new Combo(generalGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
@@ -456,6 +464,9 @@ public class EclipseAIPreferencePage extends PreferencePage implements IWorkbenc
             }
         }
 
+        config.setPreferedLanguage(languageCombo.getText());
+        config.setTheme(UITheme.values()[themeCombo.getSelectionIndex()]);
+
         int profileId = defaultProviderCombo.getSelectionIndex();
         if (profileId < 0) {
             config.setDefaultProfile(null);
@@ -481,7 +492,6 @@ public class EclipseAIPreferencePage extends PreferencePage implements IWorkbenc
         config.setCcAllowThinking(ccAllowThink.getSelection());
         config.setCcAllowTools(ccAllowTools.getSelection());
 
-        config.setPreferedLanguage(languageCombo.getText());
         config.setCcTimeout((long) ccTimeout.getSelection());
 
         IPreferenceStore store = config.store();
@@ -496,6 +506,7 @@ public class EclipseAIPreferencePage extends PreferencePage implements IWorkbenc
     @Override
     protected void performDefaults() {
         languageCombo.select(0);
+        themeCombo.select(0);
         defaultProviderCombo.select(0);
         defaultModelCombo.clearSelection();
         ccTimeout.setSelection(30);
@@ -527,6 +538,7 @@ public class EclipseAIPreferencePage extends PreferencePage implements IWorkbenc
             ccAllowTools.setSelection(config.getCcAllowTools());
 
             languageCombo.setText(config.getPreferedLanguage().orElse(""));
+            themeCombo.select(config.getTheme().ordinal());
             ccTimeout.setSelection(config.getCcTimeout().intValue());
 
             IPreferenceStore store = config.store();

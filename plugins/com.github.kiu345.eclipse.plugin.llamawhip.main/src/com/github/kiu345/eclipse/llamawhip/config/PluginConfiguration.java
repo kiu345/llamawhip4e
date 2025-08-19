@@ -1,6 +1,7 @@
 package com.github.kiu345.eclipse.llamawhip.config;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -73,13 +74,28 @@ public class PluginConfiguration {
     }
 
     public Optional<String> getPreferedLanguage() {
-        IPreferenceStore prefernceStore = Activator.getDefault().getPreferenceStore();
-        return Optional.of(prefernceStore.getString(PreferenceConstants.LANGUAGE));
+        return Optional.of(preferenceStore.getString(PreferenceConstants.LANGUAGE));
     }
 
     public void setPreferedLanguage(String model) {
-        IPreferenceStore prefernceStore = Activator.getDefault().getPreferenceStore();
-        prefernceStore.setValue(PreferenceConstants.LANGUAGE, model);
+        preferenceStore.setValue(PreferenceConstants.LANGUAGE, model);
+    }
+
+    public UITheme getTheme() {
+        String name = preferenceStore.getString(PreferenceConstants.THEME);
+        if (name == null) {
+            return UITheme.LIGHT;
+        }
+        try {
+            return UITheme.valueOf(name);
+        }
+        catch (IllegalArgumentException e) {
+            return UITheme.LIGHT;
+        }
+    }
+
+    public void setTheme(UITheme theme) {
+        preferenceStore.setValue(PreferenceConstants.THEME, Objects.requireNonNull(theme).name());
     }
 
     public AIProviderProfile getDefaultProfile() {

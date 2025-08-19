@@ -35,6 +35,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kiu345.eclipse.llamawhip.Activator;
 import com.github.kiu345.eclipse.llamawhip.config.ChatSettings;
 import com.github.kiu345.eclipse.llamawhip.config.PluginConfiguration;
+import com.github.kiu345.eclipse.llamawhip.ui.ChatComposite;
+import com.github.kiu345.eclipse.llamawhip.ui.ChatPresenter;
 import com.github.kiu345.eclipse.llamawhip.ui.Messages;
 
 import jakarta.annotation.PostConstruct;

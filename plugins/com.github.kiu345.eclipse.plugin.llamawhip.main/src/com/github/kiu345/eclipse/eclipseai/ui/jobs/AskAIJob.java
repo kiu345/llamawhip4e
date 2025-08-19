@@ -14,7 +14,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
 import com.github.kiu345.eclipse.eclipseai.services.tools.ToolService;
-import com.github.kiu345.eclipse.eclipseai.ui.ChatComposite;
 import com.github.kiu345.eclipse.llamawhip.adapter.ChatAdapter;
 import com.github.kiu345.eclipse.llamawhip.adapter.ChatAdapterFactory;
 import com.github.kiu345.eclipse.llamawhip.adapter.ModelDescriptor;
@@ -24,6 +23,7 @@ import com.github.kiu345.eclipse.llamawhip.messaging.AgentMsg;
 import com.github.kiu345.eclipse.llamawhip.messaging.ConversationManager;
 import com.github.kiu345.eclipse.llamawhip.messaging.Msg;
 import com.github.kiu345.eclipse.llamawhip.messaging.Msg.Source;
+import com.github.kiu345.eclipse.llamawhip.ui.ChatComposite;
 
 import dev.langchain4j.model.chat.StreamingChatModel;
 import dev.langchain4j.model.chat.response.ChatResponse;

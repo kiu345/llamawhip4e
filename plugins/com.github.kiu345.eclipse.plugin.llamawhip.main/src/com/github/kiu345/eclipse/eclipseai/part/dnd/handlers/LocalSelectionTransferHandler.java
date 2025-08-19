@@ -18,7 +18,7 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-import com.github.kiu345.eclipse.eclipseai.ui.ChatPresenter;
+import com.github.kiu345.eclipse.llamawhip.ui.ChatPresenter;
 import com.google.common.collect.Sets;
 
 import jakarta.inject.Inject;

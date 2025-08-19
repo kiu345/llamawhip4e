@@ -3,7 +3,7 @@
 <plugin>
     <extension
           point="org.eclipse.ui.preferencePages">
-        <page class="com.github.kiu345.eclipse.llamawhip.ui.pref.EclipseAIPreferencePage" id="com.github.kiu345.eclipse.llamawhip.preferences.LlamaWhipPreferencePage" name="LlamaWhip">
+        <page class="com.github.kiu345.eclipse.llamawhip.ui.pref.LlamaWhipPreferencePage" id="com.github.kiu345.eclipse.llamawhip.preferences.LlamaWhipPreferencePage" name="LlamaWhip">
         </page>
         <page id="com.github.kiu345.eclipse.llamawhip.preferences.PromptsPreferencePage" name="Prompts" category="com.github.kiu345.eclipse.llamawhip.preferences.LlamaWhipPreferencePage" class="com.github.kiu345.eclipse.llamawhip.ui.pref.PromptsPreferencePage">
         </page>

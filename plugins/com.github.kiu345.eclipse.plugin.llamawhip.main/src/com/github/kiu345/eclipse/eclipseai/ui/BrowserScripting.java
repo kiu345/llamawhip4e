@@ -12,6 +12,7 @@ import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
 
 import com.github.kiu345.eclipse.llamawhip.Activator;
+import com.github.kiu345.eclipse.llamawhip.config.PluginConfiguration;
 import com.github.kiu345.eclipse.llamawhip.messaging.Msg.Source;
 
 /**
@@ -162,8 +163,7 @@ public class BrowserScripting {
      */
     public static String loadCss() {
         StringBuilder css = new StringBuilder();
-//        String[] cssFiles = { "textview.css", "dark.min.css" };
-        String[] cssFiles = { "textview.css", "hjthemes.css" };
+        String[] cssFiles = PluginConfiguration.instance().getTheme().cssFiles();
         for (String file : cssFiles) {
             try (InputStream in = FileLocator
                     .toFileURL(URI.create("platform:/plugin/" + Activator.PLUGIN_ID + "/css/" + file).toURL())

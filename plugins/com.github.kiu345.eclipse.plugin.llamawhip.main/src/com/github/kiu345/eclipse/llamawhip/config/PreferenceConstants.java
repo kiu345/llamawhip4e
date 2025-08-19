@@ -12,6 +12,7 @@ public class PreferenceConstants {
 
     
     public static final String LANGUAGE = PREFIX + "language";
+    public static final String THEME = PREFIX + "theme";
     public static final String DEFAULT_PROVIDER = PREFIX + "defaultprovider";
     public static final String DEFAULT_MODEL =  PREFIX + "defaultmodel";
 

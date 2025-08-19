@@ -1,4 +1,4 @@
-package com.github.kiu345.eclipse.eclipseai.ui;
+package com.github.kiu345.eclipse.llamawhip.ui;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.PlatformUI;
 
+import com.github.kiu345.eclipse.eclipseai.ui.BrowserScripting;
 import com.github.kiu345.eclipse.eclipseai.ui.BrowserScripting.ScriptException;
 import com.github.kiu345.eclipse.eclipseai.ui.actions.CopyCodeFunction;
 import com.github.kiu345.eclipse.eclipseai.ui.actions.SaveCodeFunction;
@@ -47,7 +48,6 @@ import com.github.kiu345.eclipse.llamawhip.messaging.ToolsMsg;
 import com.github.kiu345.eclipse.llamawhip.messaging.UserMsg;
 import com.github.kiu345.eclipse.llamawhip.messaging.Msg.Source;
 import com.github.kiu345.eclipse.llamawhip.prompt.MessageParser;
-import com.github.kiu345.eclipse.llamawhip.ui.Messages;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;

@@ -5,7 +5,7 @@ import org.eclipse.swt.dnd.ImageTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.graphics.ImageData;
 
-import com.github.kiu345.eclipse.eclipseai.ui.ChatPresenter;
+import com.github.kiu345.eclipse.llamawhip.ui.ChatPresenter;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
