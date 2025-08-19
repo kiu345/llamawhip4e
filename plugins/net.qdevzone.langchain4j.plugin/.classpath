@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="jars/azure-json-1.5.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="jars/azure-ai-inference-1.0.0-beta.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="jars/azure-core-1.55.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-1.4.0-SNAPSHOT.jar" sourcepath="/langchain4j/src/main/java"/>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-code-execution-engine-graalvm-polyglot-1.4.0-beta10-SNAPSHOT.jar" sourcepath="/langchain4j-code-execution-engine-graalvm-polyglot/src/main/java"/>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-code-execution-engine-judge0-1.4.0-beta10-SNAPSHOT.jar" sourcepath="/langchain4j-code-execution-engine-judge0/src/main/java"/>

@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: LlamaWhip Github Adapter
+Bundle-SymbolicName: com.github.kiu345.eclipse.plugin.llamawhip.github
+Bundle-Version: 1.0.7.qualifier
+Export-Package: com.github.kiu345.eclipse.llamawhip.adapter.github
+Import-Package: com.github.kiu345.eclipse.llamawhip.adapter,
+ com.github.kiu345.eclipse.llamawhip.config,
+ com.github.kiu345.eclipse.llamawhip.messaging,
+ com.github.kiu345.eclipse.llamawhip.prompt,
+ dev.langchain4j.data.message,
+ dev.langchain4j.http.client.jdk,
+ dev.langchain4j.model.chat,
+ dev.langchain4j.model.chat.request,
+ dev.langchain4j.model.chat.response,
+ dev.langchain4j.model.github
+Bundle-Activator: com.github.kiu345.eclipse.llamawhip.adapter.github.Activator
+Bundle-Vendor: Stefan Daurer
+Require-Bundle: org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Automatic-Module-Name: com.github.kiu345.eclipse.plugin.llamawhip.github
+Bundle-ActivationPolicy: lazy

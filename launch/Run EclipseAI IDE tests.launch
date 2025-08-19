@@ -11,28 +11,17 @@
     <booleanAttribute key="clearwslog" value="false"/>
     <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/pde-junit"/>
     <booleanAttribute key="default" value="false"/>
-    <setAttribute key="deselected_workspace_bundles">
-        <setEntry value="com.chabicht.code-intelligence"/>
-        <setEntry value="com.chabicht.code-intelligence.tests"/>
-        <setEntry value="org.eclipse.copilot.core"/>
-        <setEntry value="org.eclipse.copilot.core.test"/>
-        <setEntry value="org.eclipse.copilot.ui"/>
-        <setEntry value="org.eclipse.copilot.ui.test"/>
-        <setEntry value="org.eclipse.corrosion"/>
-        <setEntry value="org.eclipse.corrosion.product.branding"/>
-        <setEntry value="org.eclipse.corrosion.tests"/>
-        <setEntry value="test"/>
-    </setAttribute>
+    <setAttribute key="deselected_workspace_bundles"/>
     <booleanAttribute key="includeOptional" value="true"/>
     <stringAttribute key="location" value="${workspace_loc}/../junit-workspace"/>
     <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-        <listEntry value="/com.github.kiu345.eclipse.plugin.eclipseai.main.tests"/>
+        <listEntry value="/com.github.kiu345.eclipse.plugin.llamawhip.tests"/>
     </listAttribute>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
         <listEntry value="4"/>
     </listAttribute>
-    <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value="=com.github.kiu345.eclipse.plugin.eclipseai.main.tests"/>
+    <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value="=com.github.kiu345.eclipse.plugin.llamawhip.tests"/>
     <stringAttribute key="org.eclipse.jdt.junit.EXCLUDE_TAGS" value=""/>
     <booleanAttribute key="org.eclipse.jdt.junit.HAS_EXCLUDE_TAGS" value="false"/>
     <booleanAttribute key="org.eclipse.jdt.junit.HAS_INCLUDE_TAGS" value="true"/>
@@ -46,7 +35,7 @@
     <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21"/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value=""/>
     <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
-    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="com.github.kiu345.eclipse.plugin.eclipseai.main.tests"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="com.github.kiu345.eclipse.plugin.llamawhip.tests"/>
     <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
     <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dorg.eclipse.swt.graphics.Resource.reportNonDisposed=true -ea"/>
     <stringAttribute key="pde.version" value="3.3"/>
@@ -261,9 +250,9 @@
         <setEntry value="slf4j.simple@default:default"/>
     </setAttribute>
     <setAttribute key="selected_workspace_bundles">
-        <setEntry value="com.github.kiu345.eclipse.plugin.eclipseai.dependencies@default:default"/>
-        <setEntry value="com.github.kiu345.eclipse.plugin.eclipseai.main.tests@default:false"/>
-        <setEntry value="com.github.kiu345.eclipse.plugin.eclipseai.main@default:default"/>
+        <setEntry value="com.github.kiu345.eclipse.plugin.llamawhip.dependencies@default:default"/>
+        <setEntry value="com.github.kiu345.eclipse.plugin.llamawhip.main@default:default"/>
+        <setEntry value="com.github.kiu345.eclipse.plugin.llamawhip.tests@default:false"/>
         <setEntry value="net.qdevzone.langchain4j.plugin@default:default"/>
     </setAttribute>
     <booleanAttribute key="show_selected_only" value="false"/>
