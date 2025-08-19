@@ -88,7 +88,7 @@ public class GithubCopilotAdapter extends ChatAdapterBase implements ChatAdapter
         }
 
         public Optional<Integer> getTemperature() {
-            return Optional.of(temperature);
+            return Optional.ofNullable(temperature);
         }
 
         public void setTemperature(Integer temperature) {
@@ -96,7 +96,7 @@ public class GithubCopilotAdapter extends ChatAdapterBase implements ChatAdapter
         }
 
         public Optional<Integer> getRepeatPenalty() {
-            return Optional.of(repeatPenalty);
+            return Optional.ofNullable(repeatPenalty);
         }
 
         public void setRepeatPenalty(Integer repeatPenalty) {

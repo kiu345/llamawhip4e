@@ -92,7 +92,7 @@ public class LocalAIAdapter extends ChatAdapterBase implements ChatAdapter<Local
         }
 
         public Optional<Integer> getTemperature() {
-            return Optional.of(temperature);
+            return Optional.ofNullable(temperature);
         }
 
         public void setTemperature(Integer temperature) {
@@ -100,7 +100,7 @@ public class LocalAIAdapter extends ChatAdapterBase implements ChatAdapter<Local
         }
 
         public Optional<Integer> getRepeatPenalty() {
-            return Optional.of(repeatPenalty);
+            return Optional.ofNullable(repeatPenalty);
         }
 
         public void setRepeatPenalty(Integer repeatPenalty) {
