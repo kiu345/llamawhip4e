@@ -2,7 +2,7 @@ The file ${fileName} has the following problems:
 
  ${errors} 
 
-Please provide corrections for these issues in the form of a patch. Make sure to reference the full path of the file ${fileName} in the patch header. If you need any additional information or clarification on the code or errors, please ask.
+Provide corrections for these issues in the form of a patch. Make sure to reference the full path of the file ${fileName} in the patch header. If you need any additional information or clarification on the code or errors, please ask.
 
 
 Example output:
@@ -21,6 +21,6 @@ public static void main(String[] args) {
 
 Below is the content of the file ${fileName}:
 
-```${lang}
-${documentText}
+```${type}
+${content}
 ```

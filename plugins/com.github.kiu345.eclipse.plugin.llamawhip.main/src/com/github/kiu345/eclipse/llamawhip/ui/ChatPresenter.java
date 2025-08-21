@@ -6,7 +6,10 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -20,8 +23,6 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.ui.PlatformUI;
 
-import com.github.kiu345.eclipse.eclipseai.services.tools.ToolService;
-import com.github.kiu345.eclipse.eclipseai.ui.attachment.FileAttachment;
 import com.github.kiu345.eclipse.llamawhip.adapter.ChatAdapterFactory;
 import com.github.kiu345.eclipse.llamawhip.adapter.ModelDescriptor;
 import com.github.kiu345.eclipse.llamawhip.config.ChatSettings;
@@ -31,7 +32,10 @@ import com.github.kiu345.eclipse.llamawhip.jobs.AskAIJob;
 import com.github.kiu345.eclipse.llamawhip.messaging.ConversationManager;
 import com.github.kiu345.eclipse.llamawhip.messaging.Msg;
 import com.github.kiu345.eclipse.llamawhip.messaging.UserMsg;
+import com.github.kiu345.eclipse.llamawhip.messaging.attachment.FileAttachment;
+import com.github.kiu345.eclipse.llamawhip.tools.ToolService;
 import com.github.kiu345.eclipse.llamawhip.ui.ChatComposite.State;
+import com.github.kiu345.eclipse.llamawhip.ui.patch.ApplyPatchWizardHelper;
 import com.github.kiu345.eclipse.llamawhip.ui.util.IDEUtils;
 
 import jakarta.inject.Inject;
@@ -54,6 +58,9 @@ public class ChatPresenter {
 
     @Inject
     private ILog log;
+
+    @Inject
+    private ApplyPatchWizardHelper applyPatchWizardHelper;
 
     private ModelDescriptor selectedModel = null;
 
@@ -257,6 +264,31 @@ public class ChatPresenter {
         catch (IOException e) {
             log.error("Error writing to file: " + e.getMessage());
         }
+    }
+
+    private static final Pattern CLASS_OR_INTERFACE = Pattern.compile("\\b(?:class|interface)\\s+(\\w+)");
+
+    public void doOpenCode(String type, String codeBlock) {
+        System.out.println(codeBlock);
+        if ("java".equalsIgnoreCase(type)) {
+            String createdName = "Unnamed";
+            Matcher m = CLASS_OR_INTERFACE.matcher(codeBlock);
+            if (m.find()) {
+                createdName = m.group(1);
+            }
+
+            IDEUtils.createEditor(createdName + ".java", codeBlock);
+        }
+        else if (StringUtils.isNotBlank(type)) {
+            IDEUtils.createEditor("Unnamed." + type, codeBlock);
+        }
+        else {
+            IDEUtils.createEditor("Unnamed", codeBlock);
+        }
+    }
+
+    public void doApplyPatch(String codeBlock) {
+        applyPatchWizardHelper.showApplyPatchWizardDialog(codeBlock, "");
     }
 
     public ModelDescriptor getSelectedModel() {

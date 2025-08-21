@@ -29,6 +29,7 @@ import com.github.kiu345.eclipse.llamawhip.messaging.SystemMsg;
 import com.github.kiu345.eclipse.llamawhip.messaging.ToolsMsg;
 import com.github.kiu345.eclipse.llamawhip.messaging.UserMsg;
 import com.github.kiu345.eclipse.llamawhip.prompt.PromptLoader;
+import com.github.kiu345.eclipse.llamawhip.prompt.Prompts;
 import com.google.common.collect.Lists;
 
 import dev.langchain4j.data.message.AiMessage;
@@ -60,7 +61,7 @@ public class OllamaAdapter extends ChatAdapterBase implements ChatAdapter<Ollama
         private String systemPrompt = "You are a helpful assistant";
 
         public static final int DEFAULT_TEMP = 30;
-        public static final int DEFAULT_REPEAT_PENALTY = 60;
+        public static final int DEFAULT_REPEAT_PENALTY = 120;
 
         private Boolean thinkingAllowed = null;
 
@@ -167,6 +168,10 @@ public class OllamaAdapter extends ChatAdapterBase implements ChatAdapter<Ollama
 
     public OllamaAdapter(ILog log, AIProviderProfile provider) {
         this(log, new Config(provider));
+        String sysPrompt = PluginConfiguration.instance().getPrompt(Prompts.SYSTEM);
+        if (StringUtils.isNotBlank(sysPrompt)) {
+            config().setSystemPrompt(sysPrompt);
+        }
     }
 
     public OllamaAdapter(ILog log, Config clientConfig) {
@@ -193,7 +198,7 @@ public class OllamaAdapter extends ChatAdapterBase implements ChatAdapter<Ollama
             adapterInstance.getModels();
         }
         catch (Exception ex) {
-            return new String[] {ex.getClass().getSimpleName()+": "+ex.getMessage()};
+            return new String[] { ex.getClass().getSimpleName() + ": " + ex.getMessage() };
         }
 
         return new String[] {};
@@ -224,8 +229,6 @@ public class OllamaAdapter extends ChatAdapterBase implements ChatAdapter<Ollama
                 .httpClientBuilder(httpBuilder)
                 .baseUrl(baseUrl)
                 .maxRetries(MAX_RETRIES)
-                .logRequests(true)
-                .logResponses(true)
                 .build();
 
         try {
@@ -343,14 +346,18 @@ public class OllamaAdapter extends ChatAdapterBase implements ChatAdapter<Ollama
 
         var temperature = config.getTemperature();
         var repeatPenalty = config.getRepeatPenalty();
+
+        Double temperatureVal = temperature.isPresent() ? temperature.get() / DIVIDER : null;
+        Double repeatPenaltyVal = repeatPenalty.isPresent() ? repeatPenalty.get() / DIVIDER : null;
+
         var chatModel = OllamaStreamingChatModel.builder()
                 .baseUrl(baseUrl)
                 .httpClientBuilder(httpBuilder)
                 .modelName(model.model())
                 .think(enableThinking)
                 .returnThinking(true)
-                .temperature(temperature.isPresent() ? temperature.get() / DIVIDER : null)
-                .repeatPenalty(repeatPenalty.isPresent() ? repeatPenalty.get() / DIVIDER : null)
+                .temperature(temperatureVal)
+                .repeatPenalty(repeatPenaltyVal)
                 .build();
         return new ChatCall<OllamaStreamingChatModel>(chatModel, log, messageList, newMessageConsumer);
     }

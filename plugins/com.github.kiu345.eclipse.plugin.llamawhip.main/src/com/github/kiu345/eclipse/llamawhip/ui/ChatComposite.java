@@ -31,8 +31,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.PlatformUI;
 
-import com.github.kiu345.eclipse.eclipseai.ui.attachment.FileAttachment;
-import com.github.kiu345.eclipse.eclipseai.ui.dnd.DropManager;
 import com.github.kiu345.eclipse.llamawhip.Activator;
 import com.github.kiu345.eclipse.llamawhip.adapter.ModelDescriptor;
 import com.github.kiu345.eclipse.llamawhip.adapter.ModelDescriptor.Features;
@@ -40,15 +38,19 @@ import com.github.kiu345.eclipse.llamawhip.config.ChatSettings;
 import com.github.kiu345.eclipse.llamawhip.config.PluginConfiguration;
 import com.github.kiu345.eclipse.llamawhip.messaging.AgentMsg;
 import com.github.kiu345.eclipse.llamawhip.messaging.Msg;
+import com.github.kiu345.eclipse.llamawhip.messaging.Msg.Source;
 import com.github.kiu345.eclipse.llamawhip.messaging.ToolsMsg;
 import com.github.kiu345.eclipse.llamawhip.messaging.UserMsg;
-import com.github.kiu345.eclipse.llamawhip.messaging.Msg.Source;
+import com.github.kiu345.eclipse.llamawhip.messaging.attachment.FileAttachment;
 import com.github.kiu345.eclipse.llamawhip.prompt.MessageParser;
 import com.github.kiu345.eclipse.llamawhip.ui.browser.BrowserScripting;
 import com.github.kiu345.eclipse.llamawhip.ui.browser.BrowserScripting.ScriptException;
+import com.github.kiu345.eclipse.llamawhip.ui.browser.actions.ApplyPatchFunction;
 import com.github.kiu345.eclipse.llamawhip.ui.browser.actions.CopyCodeFunction;
+import com.github.kiu345.eclipse.llamawhip.ui.browser.actions.OpenCodeFunction;
 import com.github.kiu345.eclipse.llamawhip.ui.browser.actions.SaveCodeFunction;
 import com.github.kiu345.eclipse.llamawhip.ui.browser.actions.SendPromptFunction;
+import com.github.kiu345.eclipse.llamawhip.ui.dnd.DropManager;
 import com.github.kiu345.eclipse.llamawhip.ui.util.ComboBoxIdSelectionListener;
 
 import jakarta.annotation.PostConstruct;
@@ -92,6 +94,7 @@ public class ChatComposite extends Composite {
     private Combo frmOptionSelect;
     private Combo frmModelSelect;
     private Scale frmTempSlider;
+    private Scale frmRepPenSlider;
     private Button frmAllowThink;
     private Button frmAllowWeb;
     private Button frmAllowFunctions;
@@ -272,19 +275,32 @@ public class ChatComposite extends Composite {
         });
 
         Composite tempArea = new Composite(optionsTab, SWT.NONE);
-        tempArea.setLayout(new GridLayout(2, false));
+        tempArea.setLayout(new GridLayout(4, false));
 
         Label tempLabel = new Label(tempArea, SWT.NONE);
         tempLabel.setText(Messages.chat_temperature);
         frmTempSlider = new Scale(tempArea, SWT.HORIZONTAL);
+        frmTempSlider.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         frmTempSlider.setMinimum(0);
-        frmTempSlider.setMaximum(100);
-        frmTempSlider.setIncrement(5);
-        frmTempSlider.setPageIncrement(10);
-        frmTempSlider.setSelection(30);
+        frmTempSlider.setMaximum(10);
+        frmTempSlider.setIncrement(1);
+        frmTempSlider.setSelection(3);
         frmTempSlider.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         frmTempSlider.addListener(SWT.Selection, (e) -> {
-            presenter.getSettings().setTemperatur(frmTempSlider.getSelection());
+            presenter.getSettings().setTemperatur(frmTempSlider.getSelection()*10);
+        });
+
+        Label repPenLabel = new Label(tempArea, SWT.NONE);
+        repPenLabel.setText(Messages.chat_repPen);
+        frmRepPenSlider = new Scale(tempArea, SWT.HORIZONTAL);
+        frmRepPenSlider.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        frmRepPenSlider.setMinimum(9);
+        frmRepPenSlider.setMaximum(19);
+        frmRepPenSlider.setIncrement(1);
+        frmRepPenSlider.setSelection(12);
+        frmRepPenSlider.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        frmRepPenSlider.addListener(SWT.Selection, (e) -> {
+            presenter.getSettings().setRepeatPenalty(frmRepPenSlider.getSelection()*10);
         });
 
         frmRefreshBtn = new Button(optionsTab, SWT.PUSH);
@@ -539,6 +555,8 @@ public class ChatComposite extends Composite {
         new SendPromptFunction(browser, "eclipseSendPrompt", this::prepareDoSend);
         new CopyCodeFunction(browser, "eclipseCopyCode", this::prepareDoCopyCode);
         new SaveCodeFunction(browser, "eclipseSaveCode", this::prepareDoSaveCode);
+        new OpenCodeFunction(browser, "eclipseOpenCode", this::prepareDoOpenCode);
+        new ApplyPatchFunction(browser, "eclipseApplyPatch", this::prepareDoApplyPatch);
     }
 
     public void prepareDoSend(String userPrompt, boolean predefinedPrompt) {
@@ -558,6 +576,14 @@ public class ChatComposite extends Composite {
 
     public void prepareDoSaveCode(String codeBlock, String fileName) {
         presenter.doSaveCode(codeBlock, fileName);
+    }
+
+    public void prepareDoOpenCode(String type, String codeBlock) {
+        presenter.doOpenCode(type, codeBlock);
+    }
+
+    public void prepareDoApplyPatch(String codeBlock) {
+        presenter.doApplyPatch(codeBlock);
     }
 
     public void setModelList(final List<ModelDescriptor> aiModels) {

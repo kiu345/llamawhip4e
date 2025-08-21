@@ -1,3 +1,4 @@
 bin/
 plugins/demo
 target
+.polyglot.META-INF

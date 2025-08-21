@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-definition-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-emoji-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-footnotes-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-gfm-strikethrough-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-ins-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-plantuml-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-superscript-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-tables-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-toc-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-ext-wikilink-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-html2md-converter-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-ast-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-builder-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-collection-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-data-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-dependency-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-format-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-html-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-misc-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-options-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-sequence-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="flexmark/flexmark-util-visitor-0.64.14-SNAPSHOT.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/classes" path="src/main/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="optional" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="target/generated-sources/annotations">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="ignore_optional_problems" value="true"/>
+			<attribute name="m2e-apt" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/test-classes" path="target/generated-test-sources/test-annotations">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="ignore_optional_problems" value="true"/>
+			<attribute name="m2e-apt" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

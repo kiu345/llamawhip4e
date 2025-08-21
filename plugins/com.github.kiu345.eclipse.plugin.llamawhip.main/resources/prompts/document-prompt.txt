@@ -6,7 +6,7 @@ In the context of the provided Java class [class], generate or update the JavaDo
 
 Example format for JavaDoc:
 
-```${lang}
+```${type}
 /**
  * Brief description of [name].
  * <p>
@@ -22,6 +22,6 @@ Example format for JavaDoc:
 [name]=${name}
 
 [class]=
-```${lang}
-${documentText}
+```${type}
+${content}
 ```

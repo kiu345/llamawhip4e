@@ -57,6 +57,9 @@ import com.github.kiu345.eclipse.llamawhip.config.PluginConfiguration;
 import com.github.kiu345.eclipse.llamawhip.config.UITheme;
 import com.github.kiu345.eclipse.llamawhip.ui.Messages;
 
+/**
+ * Main preference page for the LlamaWhip plugin.
+ */
 public class LlamaWhipPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
     private class PreferenceListener implements org.eclipse.jface.util.IPropertyChangeListener {

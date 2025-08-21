@@ -4,10 +4,10 @@ public enum Prompts {
     BASE("base.txt", "Internal base"),
     SYSTEM("system-prompt.txt", "System"),
     COMPLETE("codecompletion-prompt.txt", "CodeCompletion"),
+    REVIEW("codereview-prompt.txt", "Code Review"),
     DISCUSS("discuss-prompt.txt", "Discuss"),
     DOCUMENT("document-prompt.txt", "Document"),
     FIX_ERRORS("fix-errors-prompt.txt", "Fix Errors"),
-    GIT_COMMENT("gitcomment-prompt.txt", "Git Comment"),
     REFACTOR("refactor-prompt.txt", "Refactor"),
     TEST_CASE("testcase-prompt.txt", "JUnit Test case"),
     DISCUSS_SELECTED("discuss-selected.txt", "Discuss Selected code");

@@ -4,11 +4,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
-import com.github.kiu345.eclipse.eclipseai.services.tools.ToolService;
 import com.github.kiu345.eclipse.llamawhip.adapter.ChatAdapterBase.ChatCall;
 import com.github.kiu345.eclipse.llamawhip.config.ChatSettings;
 import com.github.kiu345.eclipse.llamawhip.messaging.Msg;
 import com.github.kiu345.eclipse.llamawhip.messaging.UserMsg;
+import com.github.kiu345.eclipse.llamawhip.tools.ToolService;
 
 import dev.langchain4j.model.chat.StreamingChatModel;
 

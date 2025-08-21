@@ -23,6 +23,8 @@ public class PromptLoader {
     public static final String TEMPLATE_DATE = "${date}";
     public static final String TEMPLATE_LANGUAGE = "${language}";
     public static final String TEMPLATE_SALUTATION = "${salutationType}";
+    public static final String TEMPLATE_TYPE = "${type}";
+    public static final String TEMPLATE_CONTENT = "${content}";
     private static final String DEFAULT_BASE_TEMPLATE = TEMPLATE_PROMPT;
 
     private final ILog log;

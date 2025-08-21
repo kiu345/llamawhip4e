@@ -1,46 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-    <extension
-          point="org.eclipse.ui.preferencePages">
-        <page class="com.github.kiu345.eclipse.llamawhip.ui.pref.LlamaWhipPreferencePage" id="com.github.kiu345.eclipse.llamawhip.preferences.LlamaWhipPreferencePage" name="LlamaWhip">
-        </page>
-        <page id="com.github.kiu345.eclipse.llamawhip.preferences.PromptsPreferencePage" name="Prompts" category="com.github.kiu345.eclipse.llamawhip.preferences.LlamaWhipPreferencePage" class="com.github.kiu345.eclipse.llamawhip.ui.pref.PromptsPreferencePage">
-        </page>
-        <page id="com.github.kiu345.eclipse.llamawhip.preferences.AIProfilesPreferencePage" name="AI Provider Profiles" class="com.github.kiu345.eclipse.llamawhip.ui.pref.AIProfilesPreferencePage" category="com.github.kiu345.eclipse.llamawhip.preferences.LlamaWhipPreferencePage">
-        </page>
+    <extension point="org.eclipse.ui.preferencePages">
+        <page class="com.github.kiu345.eclipse.llamawhip.ui.pref.LlamaWhipPreferencePage" id="com.github.kiu345.eclipse.llamawhip.preferences.LlamaWhipPreferencePage" name="LlamaWhip"/>
+        <page id="com.github.kiu345.eclipse.llamawhip.preferences.PromptsPreferencePage" name="Prompts" category="com.github.kiu345.eclipse.llamawhip.preferences.LlamaWhipPreferencePage" class="com.github.kiu345.eclipse.llamawhip.ui.pref.PromptsPreferencePage"/>
+        <page id="com.github.kiu345.eclipse.llamawhip.preferences.AIProfilesPreferencePage" name="AI Provider Profiles" class="com.github.kiu345.eclipse.llamawhip.ui.pref.AIProfilesPreferencePage" category="com.github.kiu345.eclipse.llamawhip.preferences.LlamaWhipPreferencePage"/>
     </extension>
     <extension point="org.eclipse.core.runtime.preferences">
-        <initializer class="com.github.kiu345.eclipse.llamawhip.config.PreferenceInitializer">
-        </initializer>
+        <initializer class="com.github.kiu345.eclipse.llamawhip.config.PreferenceInitializer"/>
     </extension>
     <extension point="org.eclipse.ui.commands">
-        <category description="LlamaWhip Commands" id="com.github.kiu345.eclipse.llamawhip.category" name="LlamaWhip">
-        </category>
-        <command categoryId="com.github.kiu345.eclipse.llamawhip.category" defaultHandler="com.github.kiu345.eclipse.eclipseai.ui.handlers.FixErrorHandler" description="Ask AI to fix errors" id="com.github.kiu345.eclipse.llamawhip.main.command.fix" name="Fix Errors"/>
+        <category description="LlamaWhip Commands" id="com.github.kiu345.eclipse.llamawhip.category" name="LlamaWhip"/>
+        <command categoryId="com.github.kiu345.eclipse.llamawhip.category" defaultHandler="com.github.kiu345.eclipse.llamawhip.ui.handlers.CodeReviewHandler" description="Do a code review on this file" id="com.github.kiu345.eclipse.llamawhip.main.command.review" name="Code Review"/>
+        <command categoryId="com.github.kiu345.eclipse.llamawhip.category" defaultHandler="com.github.kiu345.eclipse.llamawhip.ui.handlers.JavaDocHandler" description="Create JavaDoc for this file" id="com.github.kiu345.eclipse.llamawhip.main.command.javadoc" name="Create JavaDoc"/>
+        <command categoryId="com.github.kiu345.eclipse.llamawhip.category" defaultHandler="com.github.kiu345.eclipse.llamawhip.ui.handlers.FixErrorsHandler" description="Ask AI to fix errors" id="com.github.kiu345.eclipse.llamawhip.main.command.fix" name="Fix Errors"/>
     </extension>
     <extension point="org.eclipse.ui.menus">
         <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=additions">
-            <menu
-                  icon="resources/icons/llamawhip16.png"
-                  id="com.github.kiu345.eclipse.llamawhip.main.menu.jdt"
-                  label="LlamaWhip">
-                <command
-                      commandId="com.github.kiu345.eclipse.llamawhip.main.command.fix"
-                      style="push">
-                </command>
+            <menu icon="resources/icons/llamawhip16.png" id="com.github.kiu345.eclipse.llamawhip.main.menu.jdt" label="LlamaWhip">
+                <command commandId="com.github.kiu345.eclipse.llamawhip.main.command.review" style="push"/>
+                <!-- <command commandId="com.github.kiu345.eclipse.llamawhip.main.command.javadoc" style="push"/> -->
+                <!-- <command commandId="com.github.kiu345.eclipse.llamawhip.main.command.fix" style="push"/> -->
             </menu>
         </menuContribution>
     </extension>
     <extension point="org.eclipse.ui.views">
-        <category id="com.github.kiu345.eclipse.llamawhip.category" name="LlamaWhip">
-        </category>
-        <stickyView
-              id="com.github.kiu345.eclipse.llamawhip.chatview"
-              location="RIGHT"/>
-        <view allowMultiple="false" category="com.github.kiu345.eclipse.llamawhip.category" class="com.github.kiu345.eclipse.eclipseai.ui.AIChatViewPart" icon="icons/llamawhip16.png" id="com.github.kiu345.eclipse.llamawhip.chatview" inject="true" name="Assistent Chat" restorable="true"/>
+        <category id="com.github.kiu345.eclipse.llamawhip.category" name="LlamaWhip"/>
+        <stickyView id="com.github.kiu345.eclipse.llamawhip.chatview" location="RIGHT"/>
+        <view allowMultiple="false" category="com.github.kiu345.eclipse.llamawhip.category" class="com.github.kiu345.eclipse.llamawhip.ui.AIChatViewPart" icon="icons/llamawhip16.png" id="com.github.kiu345.eclipse.llamawhip.chatview" inject="true" name="Assistent Chat" restorable="true"/>
     </extension>
-    <!--
+<!--
   <extension point="org.eclipse.jdt.ui.javaCompletionProposalComputer" id="eclipseai.partdescriptor.chatview.completion" name="EclipseAI">
         <javaCompletionProposalComputer requiresUIThread="false" class="com.github.kiu345.eclipse.eclipseai.ui.cc.CompletionProposalComputer" needsSortingAfterFiltering="true" activate="true">
                 <partition type="__dftl_partition_content_type"/>
@@ -52,14 +41,14 @@
                 <partition type="__java_multiline_string"/>
         </javaCompletionProposalComputer>
   </extension>
-  -->
+-->
     <!-- Command -->
     <extension point="org.eclipse.ui.commands">
         <command
               categoryId="com.github.kiu345.eclipse.llamawhip.category"
-              defaultHandler="com.github.kiu345.eclipse.eclipseai.ui.cc.InlinePromptHandler"
-              description="Opens a prompt at the current text cursor location"
               id="com.github.kiu345.eclipse.llamawhip.main.commands.inlinePrompt"
+              defaultHandler="com.github.kiu345.eclipse.llamawhip.ui.cc.InlinePromptHandler"
+              description="Opens a prompt at the current text cursor location"
               name="Inline AI Prompt"/>
     </extension>
     <!-- Hotkey Binding -->
@@ -68,9 +57,7 @@
     </extension>
     <!-- Command Handler -->
     <extension point="org.eclipse.ui.handlers">
-        <handler
-              class="com.github.kiu345.eclipse.eclipseai.ui.cc.InlinePromptHandler"
-              commandId="com.github.kiu345.eclipse.llamawhip.main.commands.inlinePrompt"/>
+        <handler class="com.github.kiu345.eclipse.llamawhip.ui.cc.InlinePromptHandler" commandId="com.github.kiu345.eclipse.llamawhip.main.commands.inlinePrompt"/>
     </extension>
 <!--
     <extension point="org.eclipse.jdt.ui.quickAssistProcessors">

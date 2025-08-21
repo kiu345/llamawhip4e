@@ -241,7 +241,7 @@ function updateSelection() {
 	});
 }
 
-
+/*
 function enableDnD(id) {
 	const dropZone = document.getElementById(id);
 
@@ -272,3 +272,4 @@ function enableDnD(id) {
 		}
 	});
 }
+*/

@@ -16,6 +16,7 @@ import org.osgi.framework.FrameworkUtil;
 
 import com.github.kiu345.eclipse.llamawhip.Activator;
 import com.github.kiu345.eclipse.llamawhip.adapter.ModelDescriptor;
+import com.github.kiu345.eclipse.llamawhip.prompt.Prompts;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
@@ -174,5 +175,53 @@ public class PluginConfiguration {
 
     public Optional<ModelDescriptor> getModelDescriptor(String modelName) {
         return modelList.stream().filter(t -> t.name().equals(modelName)).findFirst();
+    }
+
+    public String getPrompt(Prompts prompt) {
+        switch (prompt) {
+            case SYSTEM -> {
+                String promptText = preferenceStore.getString(prompt.preferenceName());
+                if (StringUtils.isBlank(promptText)) {
+                    promptText = preferenceStore.getDefaultString(prompt.preferenceName());
+                }
+                if (StringUtils.isBlank(promptText)) {
+                    promptText = "";
+                }
+                return promptText;
+            }
+            case REVIEW -> {
+                String promptText = preferenceStore.getString(prompt.preferenceName());
+                if (StringUtils.isBlank(promptText)) {
+                    promptText = preferenceStore.getDefaultString(prompt.preferenceName());
+                }
+                if (StringUtils.isBlank(promptText)) {
+                    promptText = "Review:\n```${type}\n${content}n```\n";
+                }
+                return promptText;
+            }
+            case DOCUMENT -> {
+                String promptText = preferenceStore.getString(prompt.preferenceName());
+                if (StringUtils.isBlank(promptText)) {
+                    promptText = preferenceStore.getDefaultString(prompt.preferenceName());
+                }
+                if (StringUtils.isBlank(promptText)) {
+                    promptText = "Review:\n```${type}\n${content}n```\n";
+                }
+                return promptText;
+            }
+            case FIX_ERRORS -> {
+                String promptText = preferenceStore.getString(prompt.preferenceName());
+                if (StringUtils.isBlank(promptText)) {
+                    promptText = preferenceStore.getDefaultString(prompt.preferenceName());
+                }
+                if (StringUtils.isBlank(promptText)) {
+                    promptText = "Review:\n```${type}\n${content}n```\n";
+                }
+                return promptText;
+            }
+            default -> {
+                return null;
+            }
+        }
     }
 }

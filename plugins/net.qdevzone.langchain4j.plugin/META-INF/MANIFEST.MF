@@ -2,45 +2,37 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LangChain4j Wrapper Plugin
 Bundle-SymbolicName: net.qdevzone.langchain4j.plugin
-Bundle-Version: 1.4.0.b1-qualifier
+Bundle-Version: 1.4.0.b2
 Bundle-Vendor: qdevzone.net
 Automatic-Module-Name: net.qdevzone.langchain4j.plugin
-Require-Bundle: org.jsoup;visibility:=reexport,
- slf4j.api,
- slf4j.simple,
- com.github.kiu345.eclipse.plugin.llamawhip.dependencies,
- com.fasterxml.jackson.core.jackson-annotations,
- com.fasterxml.jackson.core.jackson-core,
- com.fasterxml.jackson.core.jackson-databind
 Bundle-ClassPath: jars/langchain4j-1.4.0-SNAPSHOT.jar,
+ jars/langchain4j-azure-open-ai-1.4.0-SNAPSHOT.jar,
  jars/langchain4j-code-execution-engine-graalvm-polyglot-1.4.0-beta10-SNAPSHOT.jar,
  jars/langchain4j-core-1.4.0-SNAPSHOT.jar,
  jars/langchain4j-document-loader-amazon-s3-1.4.0-beta10-SNAPSHOT.jar,
  jars/langchain4j-document-loader-azure-storage-blob-1.4.0-beta10-SNAPSHOT.jar,
  jars/langchain4j-document-loader-github-1.4.0-beta10-SNAPSHOT.jar,
+ jars/langchain4j-document-loader-playwright-1.4.0-beta10-SNAPSHOT.jar,
  jars/langchain4j-document-parser-apache-pdfbox-1.4.0-beta10-SNAPSHOT.jar,
  jars/langchain4j-document-parser-apache-poi-1.4.0-beta10-SNAPSHOT.jar,
  jars/langchain4j-document-parser-apache-tika-1.4.0-beta10-SNAPSHOT.jar,
  jars/langchain4j-document-transformer-jsoup-1.4.0-beta10-SNAPSHOT.jar,
+ jars/langchain4j-easy-rag-1.4.0-beta10-SNAPSHOT.jar,
  jars/langchain4j-embedding-store-filter-parser-sql-1.4.0-beta10-SNAPSHOT.jar,
  jars/langchain4j-github-models-1.4.0-beta10-SNAPSHOT.jar,
  jars/langchain4j-http-client-1.4.0-SNAPSHOT.jar,
  jars/langchain4j-http-client-jdk-1.4.0-SNAPSHOT.jar,
+ jars/langchain4j-hugging-face-1.4.0-beta10-SNAPSHOT.jar,
+ jars/langchain4j-jlama-1.4.0-beta10-SNAPSHOT.jar,
  jars/langchain4j-kotlin-1.4.0-beta10-SNAPSHOT.jar,
  jars/langchain4j-local-ai-1.4.0-beta10-SNAPSHOT.jar,
  jars/langchain4j-mcp-1.4.0-beta10-SNAPSHOT.jar,
  jars/langchain4j-ollama-1.4.0-SNAPSHOT.jar,
- jars/langchain4j-jlama-1.4.0-beta10-SNAPSHOT.jar,
  jars/langchain4j-open-ai-1.4.0-SNAPSHOT.jar,
  jars/langchain4j-open-ai-official-1.4.0-beta10-SNAPSHOT.jar,
  jars/langchain4j-web-search-engine-google-custom-1.4.0-beta10-SNAPSHOT.jar,
  jars/langchain4j-web-search-engine-searchapi-1.4.0-beta10-SNAPSHOT.jar,
- jars/langchain4j-web-search-engine-tavily-1.4.0-beta10-SNAPSHOT.jar,
- jars/langchain4j-hugging-face-1.4.0-beta10-SNAPSHOT.jar,
- jars/langchain4j-azure-open-ai-1.4.0-SNAPSHOT.jar,
- jars/langchain4j-document-loader-playwright-1.4.0-beta10-SNAPSHOT.jar,
- jars/langchain4j-easy-rag-1.4.0-beta10-SNAPSHOT.jar,
- jars/langchain4j-vespa-1.4.0-beta10-SNAPSHOT.jar
+ jars/langchain4j-web-search-engine-tavily-1.4.0-beta10-SNAPSHOT.jar
 Export-Package: dev.langchain4j,
  dev.langchain4j.agent.tool;uses:="dev.langchain4j.model.chat.request.json",
  dev.langchain4j.chain;
@@ -219,3 +211,9 @@ Export-Package: dev.langchain4j,
  dev.langchain4j.store.embedding.filter.comparison;uses:="dev.langchain4j.store.embedding.filter",
  dev.langchain4j.store.embedding.filter.logical;uses:="dev.langchain4j.store.embedding.filter",
  dev.langchain4j.store.memory.chat
+Import-Package: org.slf4j
+Require-Bundle: slf4j.api,
+ com.fasterxml.jackson.core.jackson-annotations;bundle-version="2.19.0",
+ com.fasterxml.jackson.core.jackson-core;bundle-version="2.19.0",
+ com.fasterxml.jackson.core.jackson-databind;bundle-version="2.19.0",
+ com.github.kiu345.eclipse.plugin.llamawhip.dependencies;bundle-version="1.0.8"

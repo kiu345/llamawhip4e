@@ -56,6 +56,7 @@ public class Messages extends NLS {
     public static String chat_config;
     public static String chat_model;
     public static String chat_temperature;
+    public static String chat_repPen;
 
     public static String chat_allowThinking;
     public static String chat_allowTools;

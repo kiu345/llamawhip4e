@@ -19,7 +19,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-import com.github.kiu345.eclipse.eclipseai.ui.handlers.Context;
 import com.github.kiu345.eclipse.llamawhip.ui.ChatPresenter;
 
 import jakarta.inject.Inject;

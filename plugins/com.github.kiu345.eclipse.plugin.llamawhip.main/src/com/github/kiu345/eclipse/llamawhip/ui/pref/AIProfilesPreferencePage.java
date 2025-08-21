@@ -46,6 +46,9 @@ import com.github.kiu345.eclipse.llamawhip.config.AIProvider;
 import com.github.kiu345.eclipse.llamawhip.config.AIProviderProfile;
 import com.github.kiu345.eclipse.llamawhip.ui.Messages;
 
+/**
+ * Preference page for managing AI provider profiles.
+ */
 public class AIProfilesPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
     private ILog log;

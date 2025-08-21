@@ -7,8 +7,8 @@ public class ChatSettings {
     private Boolean thinkingAllowed = true;
     private Boolean toolsAllowed = true;
     private Boolean webAllowed = false;
-    private Integer temperatur = 10;
-    private Integer repeatPenalty = 80;
+    private Integer temperatur = 20;
+    private Integer repeatPenalty = 120;
 
     public ChatSettings() {
         super();

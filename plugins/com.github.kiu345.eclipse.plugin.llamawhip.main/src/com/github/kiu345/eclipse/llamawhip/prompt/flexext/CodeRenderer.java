@@ -33,28 +33,23 @@ public class CodeRenderer implements NodeRenderer {
         return set;
     }
 
-    private String addStartBlock(HtmlWriter html) {
+    private String addStartBlock(HtmlWriter html, String type) {
         String codeBlockId = UUID.randomUUID().toString();
-        html.append("<input type=\"button\" onClick=\"eclipseCopyCode(document.getElementById('%s').innerText)\" value=\"Copy\" />".formatted(codeBlockId));
-        html.append("<input type=\"button\" onClick=\"eclipseSaveCode(document.getElementById('%s').innerText)\" value=\"Save\" />".formatted(codeBlockId));
-//        html.append("<input type=\"${showApplyPatch}\" onClick=\"eclipseApplyPatch(document.getElementById('${codeBlockId}').innerText)\" value=\"Apply\"/>".formatted(codeBlockId));
-//                """
-//                        <input type="button" onClick="eclipseCopyCode(document.getElementById('${codeBlockId}').innerText)" value="Copy" />
-//                        <input type="button" onClick="eclipseSaveCode(document.getElementById('${codeBlockId}').innerText)" value="Save" />
-//                        <input type="${showApplyPatch}" onClick="eclipseApplyPatch(document.getElementById('${codeBlockId}').innerText)" value="ApplyPatch"/>
-//                        <pre style="margin-left: ${indent}pt;"><code lang="${lang}" id="${codeBlockId}">"""
-//                        .replace("${indent}", "" + (indent * 5))
-//                        .replace("${lang}", lang)
-//                        .replace("${codeBlockId}", codeBlockId)
-//                        .replace("${showApplyPatch}", "diff".equals(lang) ? "button" : "hidden") // show "Apply Patch" button for diffs
-//        );
+        html.append("<input type=\"button\" onClick=\"eclipseCopyCode(document.getElementById('%s').innerText)\" class=\"codebtn copy\" value=\"Copy\" />".formatted(codeBlockId));
+        html.append("<input type=\"button\" onClick=\"eclipseSaveCode(document.getElementById('%s').innerText)\" class=\"codebtn save\" value=\"Save\" />".formatted(codeBlockId));
+        if (!"diff".equalsIgnoreCase(type)) {
+            html.append("<input type=\"button\" onClick=\"eclipseOpenCode('%s',document.getElementById('%s').innerText)\" class=\"codebtn open\" value=\"Open\" />".formatted(type, codeBlockId));
+        }
+        if ("diff".equalsIgnoreCase(type)) {
+            html.append("<input type=\"button\" onClick=\"eclipseApplyPatch(document.getElementById('%s').innerText)\" class=\"codebtn patch\" value=\"Apply\" />".formatted(codeBlockId));
+        }
         return codeBlockId;
     }
 
     void render(FencedCodeBlock node, NodeRendererContext context, HtmlWriter html) {
         html.line();
 
-        String blockId = addStartBlock(html);
+        String blockId = addStartBlock(html, node.getInfo().toStringOrNull());
 
         html.srcPosWithTrailingEOL(node.getChars()).withAttr().tag("pre").attr("id", blockId).openPre();
 

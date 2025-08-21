@@ -17,10 +17,10 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-import com.github.kiu345.eclipse.eclipseai.services.tools.SimpleAITools;
-import com.github.kiu345.eclipse.eclipseai.services.tools.ToolService;
-import com.github.kiu345.eclipse.eclipseai.services.tools.ToolService.ToolInfo;
-import com.github.kiu345.eclipse.eclipseai.services.tools.WebTools;
+import com.github.kiu345.eclipse.llamawhip.tools.SimpleAITools;
+import com.github.kiu345.eclipse.llamawhip.tools.ToolService;
+import com.github.kiu345.eclipse.llamawhip.tools.WebTools;
+import com.github.kiu345.eclipse.llamawhip.tools.ToolService.ToolInfo;
 import com.github.kiu345.eclipse.util.MockUtils;
 
 import dev.langchain4j.agent.tool.ToolExecutionRequest;

@@ -12,12 +12,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.slf4j.LoggerFactory;
 
-import com.github.kiu345.eclipse.eclipseai.services.tools.ToolService;
-import com.github.kiu345.eclipse.eclipseai.services.tools.ToolService.ToolInfo;
 import com.github.kiu345.eclipse.llamawhip.messaging.Msg;
 import com.github.kiu345.eclipse.llamawhip.messaging.ToolsMsg;
+import com.github.kiu345.eclipse.llamawhip.tools.ToolService;
+import com.github.kiu345.eclipse.llamawhip.tools.ToolService.ToolInfo;
 
 import dev.langchain4j.agent.tool.ToolExecutionRequest;
 import dev.langchain4j.data.message.ChatMessage;
@@ -45,7 +44,11 @@ public abstract class ChatAdapterBase {
         private CompletableFuture<IStatus> future;
 
         private Consumer<Throwable> errorConsumer = e -> {
-            LoggerFactory.getLogger(getClass()).error(e.getMessage());
+            if (getLog() != null)
+                getLog().error(e.getMessage());
+            else {
+                System.err.println(e.getMessage());
+            }
         };
 
         private final Consumer<Msg> newMessageConsumer;
@@ -69,6 +72,10 @@ public abstract class ChatAdapterBase {
             this.messageList = Collections.synchronizedList(new ArrayList<>(Objects.requireNonNull(messages)));
             this.log = log;
             this.newMessageConsumer = Objects.requireNonNull(newMessageConsumer);
+        }
+
+        protected ILog getLog() {
+            return log;
         }
 
         public ChatCall<T> onMessageSend(Runnable sendHandler) {

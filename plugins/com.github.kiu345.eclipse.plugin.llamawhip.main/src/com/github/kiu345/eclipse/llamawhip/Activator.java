@@ -8,6 +8,9 @@ import org.osgi.framework.BundleContext;
 
 import com.github.kiu345.eclipse.llamawhip.config.PluginConfiguration;
 
+/**
+ * Activator class for the LlamaWhip plugin.
+ */
 public class Activator extends AbstractUIPlugin {
     public static final String PLUGIN_NAME = "LlamaWhip";
     public static final String PLUGIN_ID = "com.github.kiu345.eclipse.plugin.llamawhip.main";
@@ -50,12 +53,16 @@ public class Activator extends AbstractUIPlugin {
     /**
      * Indicates whether debug mode is enabled.
      *
-     * <p>Debug mode can be activated by launching Eclipse with the system property:</p>
+     * <p>
+     * Debug mode can be activated by launching Eclipse with the system property:
+     * </p>
      * 
      * <code>-Dcom.github.kiu345.eclipse.plugin.llamawhip.debug=true</code>
      * 
-     * <p>When enabled, the plugin will produce additional diagnostic output useful
-     * during development or troubleshooting.</p>
+     * <p>
+     * When enabled, the plugin will produce additional diagnostic output useful
+     * during development or troubleshooting.
+     * </p>
      *
      * @return {@code true} if debug mode is active, {@code false} otherwise
      */

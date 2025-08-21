@@ -22,6 +22,14 @@ import com.github.kiu345.eclipse.llamawhip.config.PluginConfiguration;
 import com.github.kiu345.eclipse.llamawhip.prompt.Prompts;
 import com.github.kiu345.eclipse.llamawhip.ui.Messages;
 
+/**
+ * Preference page for editing prompts.
+ * <p>
+ * This page displays a list of available prompts on the top and the
+ * selected prompt's text below. Users can edit the text of
+ * non-base prompts, apply changes, or reset to the default values.
+ * </p>
+ */
 public class PromptsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
     private List list;
     private Text textArea;
@@ -46,14 +54,13 @@ public class PromptsPreferencePage extends PreferencePage implements IWorkbenchP
         sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         list = new List(sashForm, SWT.BORDER | SWT.SINGLE | SWT.V_SCROLL);
-      
+
         infoText = new Label(sashForm, SWT.WRAP);
         infoText.setText("");
 
         textArea = new Text(sashForm, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
         var textAreaLayoutData = new GridData(GridData.FILL_BOTH);
         textArea.setLayoutData(textAreaLayoutData);
-        
 
         // Sets the initial weight ratio
         sashForm.setWeights(new int[] { 15, 5, 80 });
@@ -63,7 +70,6 @@ public class PromptsPreferencePage extends PreferencePage implements IWorkbenchP
 //        preferencePresenter.registerView(this);
         String[] prompts = Arrays.stream(Prompts.values()).map(Prompts::getDescription).toArray(String[]::new);
         setPrompts(prompts);
-        
 
         return sashForm;
     }

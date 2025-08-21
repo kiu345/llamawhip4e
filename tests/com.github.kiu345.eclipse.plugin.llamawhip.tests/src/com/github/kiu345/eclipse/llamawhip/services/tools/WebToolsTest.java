@@ -10,7 +10,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.github.kiu345.eclipse.eclipseai.services.tools.WebTools;
+import com.github.kiu345.eclipse.llamawhip.tools.WebTools;
 import com.github.kiu345.eclipse.util.MockUtils;
 
 class WebToolsTest {
