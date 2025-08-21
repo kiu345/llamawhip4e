@@ -1,10 +1,16 @@
 package com.github.kiu345.eclipse.eclipseai.ui.cc;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.runtime.ILog;
+import org.eclipse.jface.bindings.keys.KeyStroke;
+import org.eclipse.jface.fieldassist.ContentProposalAdapter;
+import org.eclipse.jface.fieldassist.IContentProposalListener2;
+import org.eclipse.jface.fieldassist.SimpleContentProposalProvider;
+import org.eclipse.jface.fieldassist.TextContentAdapter;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
@@ -39,15 +45,22 @@ public class InlinePromptProposal {
             switch (e.keyCode) {
                 case SWT.CR:
                     e.doit = false;
+                    if (proposalOpen) {
+                        // TODO: fix this, not working ATM
+                        break;
+                    }
                     if (state == 0 || (state != 0 && ((e.stateMask & SWT.CTRL) != 0))) {
                         try {
                             Display.getDefault().asyncExec(() -> {
                                 label.setText("Prompt (...)");
                             });
                             state = 1;
-                            String textContent = text.getText();
+                            String input = mapTriggerToPrompt(text.getText());
+
+                            final String request = input;
+
                             CompletableFuture.supplyAsync(() -> {
-                                answer = ask(document, "java", selection.getOffset(), selection.getLength(), textContent);
+                                answer = ask(document, "java", selection.getOffset(), selection.getLength(), request);
                                 return answer;
 
                             }).whenComplete((code, th) -> {
@@ -114,9 +127,25 @@ public class InlinePromptProposal {
 
     private IDocument document;
     private ITextSelection selection;
+    private boolean proposalOpen = false;
+
+    private static final Map<String, String> PROMPT_MAP = Map.of(
+            "/javadoc", "Create a short javadoc comment here",
+            "/builder", "Create a builder class"
+    );
 
     public InlinePromptProposal(ILog log) {
         this.log = log;
+    }
+
+    private String mapTriggerToPrompt(String input) {
+        if (StringUtils.isBlank(input)) {
+            return input;
+        }
+        if (PROMPT_MAP.containsKey(input.toLowerCase())) {
+            input = PROMPT_MAP.get(input.toLowerCase());
+        }
+        return input;
     }
 
     public void showInlinePrompt(IDocument document, ITextSelection selection, StyledText styledText) {
@@ -142,7 +171,7 @@ public class InlinePromptProposal {
         popupShell.setLayout(gridLayout);
 
         label = new Label(popupShell, SWT.SINGLE);
-        label.setText("Prompt (ENTER=Send, ESC=Abort)");
+        label.setText("Prompt (ENTER=Send, ESC=Abort, CTRL+SHIFT=Shortcuts)");
         label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         label.setBackground(display.getSystemColor(SWT.COLOR_TRANSPARENT));
 
@@ -150,6 +179,32 @@ public class InlinePromptProposal {
         text.setMessage("Prompt...");
         text.setBackground(display.getSystemColor(SWT.COLOR_INFO_BACKGROUND));
         text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        SimpleContentProposalProvider proposalProvider = new SimpleContentProposalProvider(PROMPT_MAP.keySet().toArray(String[]::new));
+        proposalProvider.setFiltering(true);
+        var keyStroke = KeyStroke.getInstance(SWT.CTRL, SWT.SPACE);
+        ContentProposalAdapter adapter = new ContentProposalAdapter(
+                text,
+                new TextContentAdapter(),
+                proposalProvider,
+                keyStroke,
+                new char[] { '/' }
+        );
+
+        adapter.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
+        adapter.addContentProposalListener(new IContentProposalListener2() {
+
+            @Override
+            public void proposalPopupOpened(ContentProposalAdapter adapter) {
+                proposalOpen = true;
+
+            }
+
+            @Override
+            public void proposalPopupClosed(ContentProposalAdapter adapter) {
+                proposalOpen = false;
+            }
+        });
 
         responseText = new Text(popupShell, SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
         responseText.setEditable(false);
