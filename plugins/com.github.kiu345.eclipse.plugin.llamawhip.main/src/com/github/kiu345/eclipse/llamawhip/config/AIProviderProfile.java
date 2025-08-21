@@ -205,8 +205,115 @@ public class AIProviderProfile {
         }
         AIProviderProfile other = (AIProviderProfile) obj;
         return Objects.equals(apiKey, other.apiKey) && Objects.equals(apiPath, other.apiPath) && connectTimeout == other.connectTimeout && Objects.equals(endpoint, other.endpoint)
-                && Objects.equals(id, other.id) && Objects.equals(keepAlive, other.keepAlive) && Objects.equals(modelPath, other.modelPath) && Objects.equals(modelNames, other.modelNames)
+                && Objects.equals(id, other.id) && Objects.equals(keepAlive, other.keepAlive) && Objects.equals(modelPath, other.modelPath)
+                && Objects.equals(modelNames, other.modelNames)
                 && Objects.equals(name, other.name) && Objects.equals(organization, other.organization) && provider == other.provider && requestTimeout == other.requestTimeout
                 && Objects.equals(urlBase, other.urlBase);
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private UUID id = UUID.randomUUID();
+        private String name = "";
+        private AIProvider provider;
+        private String urlBase;
+        private String apiPath;
+        private String modelPath;
+        private String modelNames;
+        private String apiKey;
+        private int connectTimeout = 15;
+        private int requestTimeout = 60;
+        private Integer keepAlive;
+        private String organization;
+        private String endpoint;
+
+        public Builder() {
+        }
+
+        public Builder id(UUID id) {
+            this.id = Objects.requireNonNull(id);
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = Objects.requireNonNull(name);
+            return this;
+        }
+
+        public Builder provider(AIProvider provider) {
+            this.provider = provider;
+            return this;
+        }
+
+        public Builder urlBase(String urlBase) {
+            this.urlBase = urlBase;
+            return this;
+        }
+
+        public Builder apiPath(String apiPath) {
+            this.apiPath = apiPath;
+            return this;
+        }
+
+        public Builder modelPath(String modelPath) {
+            this.modelPath = modelPath;
+            return this;
+        }
+
+        public Builder modelNames(String modelNames) {
+            this.modelNames = modelNames;
+            return this;
+        }
+
+        public Builder apiKey(String apiKey) {
+            this.apiKey = apiKey;
+            return this;
+        }
+
+        public Builder connectTimeout(int connectTimeout) {
+            this.connectTimeout = connectTimeout;
+            return this;
+        }
+
+        public Builder requestTimeout(int requestTimeout) {
+            this.requestTimeout = requestTimeout;
+            return this;
+        }
+
+        public Builder keepAlive(Integer keepAlive) {
+            this.keepAlive = keepAlive;
+            return this;
+        }
+
+        public Builder organization(String organization) {
+            this.organization = organization;
+            return this;
+        }
+
+        public Builder endpoint(String endpoint) {
+            this.endpoint = endpoint;
+            return this;
+        }
+
+        public AIProviderProfile build() {
+            AIProviderProfile profile = new AIProviderProfile();
+            profile.setId(id);
+            profile.setName(name);
+            profile.setProvider(provider);
+            profile.setUrlBase(urlBase);
+            profile.setApiPath(apiPath);
+            profile.setModelPath(modelPath);
+            profile.modelNames = modelNames;
+            profile.setApiKey(apiKey);
+            profile.setConnectTimeout(connectTimeout);
+            profile.setRequestTimeout(requestTimeout);
+            profile.setKeepAlive(keepAlive);
+            profile.setOrganization(organization);
+            profile.setEndpoint(endpoint);
+            return profile;
+        }
     }
 }
