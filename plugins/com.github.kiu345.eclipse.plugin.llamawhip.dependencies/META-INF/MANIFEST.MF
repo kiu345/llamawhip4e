@@ -5,10 +5,10 @@ Automatic-Module-Name: com.github.kiu345.eclipse.plugin.llamawhip.dependencies
 Bundle-Vendor: Stefan Daurer
 Bundle-SymbolicName: com.github.kiu345.eclipse.plugin.llamawhip.dependencies;singleton:=true
 Bundle-Version: 1.0.7
-Bundle-ClassPath: annotations/annotations-24.0.1.jar,
+Bundle-ClassPath: annotations/annotations-26.0.2.jar,
  plantuml/plantuml-epl-1.2025.4.jar,
- tika/tika-core-3.1.0.jar,
- tika/tika-parser-text-module-3.1.0.jar,
+ tika/tika-core-3.2.2.jar,
+ tika/tika-parser-text-module-3.2.2.jar,
  jlama/big-math-2.0.0.jar,
  jlama/jackson-dataformat-yaml-2.19.2.jar,
  jlama/jafama-2.3.2.jar,

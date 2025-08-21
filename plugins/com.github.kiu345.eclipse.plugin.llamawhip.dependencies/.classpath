@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="annotations/annotations-24.0.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="tika/tika-parser-text-module-3.1.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="tika/tika-core-3.1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="annotations/annotations-26.0.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="tika/tika-parser-text-module-3.2.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="tika/tika-core-3.2.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="jlama/big-math-2.0.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="jlama/jackson-dataformat-yaml-2.19.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="jlama/jafama-2.3.2.jar"/>

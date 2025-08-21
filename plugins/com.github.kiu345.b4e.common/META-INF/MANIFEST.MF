@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: QDZ Bundeled4Eclipse Common Jars
+Automatic-Module-Name: b4e.common
+Bundle-Vendor: QDevZone.net
+Bundle-SymbolicName: b4e.common;singleton:=true
+Bundle-Version: 0.5.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-21

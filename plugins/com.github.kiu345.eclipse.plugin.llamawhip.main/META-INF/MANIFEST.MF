@@ -14,9 +14,9 @@ Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: com.github.kiu345.eclipse.plugin.llamawhip.main
 Bundle-Classpath: .
 Bundle-ActivationPolicy: lazy
-Import-Package: com.fasterxml.jackson.annotation;version="[2.19.0,3.0.0)",
- com.fasterxml.jackson.core;version="[2.18,3)",
- com.fasterxml.jackson.core.type;version="[2.18,3)",
+Import-Package: com.fasterxml.jackson.annotation,
+ com.fasterxml.jackson.core,
+ com.fasterxml.jackson.core.type,
  com.fasterxml.jackson.databind,
  com.fasterxml.jackson.databind.json,
  com.fasterxml.jackson.databind.module,
@@ -173,5 +173,6 @@ Require-Bundle: slf4j.api,
  com.google.guava,
  org.eclipse.ui.console,
  org.eclipse.e4.core.di,
- org.eclipse.e4.core.commands
+ org.eclipse.e4.core.commands,
+ com.fasterxml.jackson.core.jackson-databind
 

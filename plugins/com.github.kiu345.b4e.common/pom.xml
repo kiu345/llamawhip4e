@@ -1,0 +1,235 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.github.kiu345</groupId>
+    <artifactId>llamawhip.parent</artifactId>
+    <version>0.5.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>b4e.common</artifactId>
+  <!--
+  <packaging>eclipse-plugin</packaging>
+  -->
+
+  <dependencies>
+<dependency>
+    <groupId>com.github.tjake</groupId>
+    <artifactId>jlama-core</artifactId>
+    <version>0.8.4</version>
+    <exclusions>
+    	<exclusion>
+    		<groupId>com.google.code.findbugs</groupId>
+    		<artifactId>annotations</artifactId>
+    	</exclusion>
+    	<exclusion>
+    		<groupId>com.fasterxml.jackson.core</groupId>
+    		<artifactId>jackson-core</artifactId>
+    	</exclusion>
+    	<exclusion>
+    		<groupId>com.fasterxml.jackson.core</groupId>
+    		<artifactId>jackson-databind</artifactId>
+    	</exclusion>
+    	<exclusion>
+    		<groupId>com.fasterxml.jackson.core</groupId>
+    		<artifactId>jackson-annotations</artifactId>
+    	</exclusion>
+    </exclusions>
+</dependency>
+
+<dependency>
+    <groupId>org.jetbrains</groupId>
+    <artifactId>annotations</artifactId>
+    <version>26.0.2</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.tika</groupId>
+    <artifactId>tika-core</artifactId>
+    <version>3.2.2</version>
+    <exclusions>
+    	<exclusion>
+    		<groupId>org.slf4j</groupId>
+    		<artifactId>slf4j-api</artifactId>
+    	</exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>org.apache.tika</groupId>
+    <artifactId>tika-parser-text-module</artifactId>
+    <version>3.2.2</version>
+    <exclusions>
+    	<exclusion>
+    		<groupId>org.apache.commons</groupId>
+    		<artifactId>commons-csv</artifactId>
+    	</exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>net.sourceforge.plantuml</groupId>
+    <artifactId>plantuml-epl</artifactId>
+    <version>1.2025.4</version>
+</dependency>
+</dependencies>
+
+  <build>
+        <plugins>
+            <!-- Compiler -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.0</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+
+            <!-- Version Enforcer -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.6.1</version>
+                <executions>
+                    <execution>
+                        <id>enforce</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>[3.8,)</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>[17,)</version>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Version Management -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.18.0</version>
+                <configuration>
+                    <generateBackupPoms>true</generateBackupPoms>
+                    <processDependencyManagement>false</processDependencyManagement>
+                    <ruleSet>
+                        <ignoreVersions>
+                            <ignoreVersion>
+                                <!-- can be either: 'exact' (default), 'regex' or 'range' -->
+                                <type>regex</type>
+                                <version>(?i).+([-_.](snapshot|m\d+|rc\d*|alpha\d*|beta\d*|dev\d*|preview|eap|canary|nightly)[-_.0-9]*)</version>
+                            </ignoreVersion>
+                        </ignoreVersions>
+                    </ruleSet>
+                    <excludeProperties>argLine,
+                        java.version,
+                        project.build.sourceEncoding,
+                        sonar.version,
+                        sonar.projectKey</excludeProperties>
+                    <properties>
+                        <property>
+                            <name>poi.version</name>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>org.apache.poi</groupId>
+                                    <artifactId>poi</artifactId>
+                                </dependency>
+                            </dependencies>
+                        </property>
+                        <property>
+                            <name>tika.version</name>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>org.apache.tika</groupId>
+                                    <artifactId>tika-core</artifactId>
+                                </dependency>
+                            </dependencies>
+                        </property>
+                        <property>
+                            <name>twelvemonkeys.imageio.version</name>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>com.twelvemonkeys.imageio</groupId>
+                                    <artifactId>imageio-webp</artifactId>
+                                </dependency>
+                            </dependencies>
+                        </property>
+                    </properties>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>display-dependency-updates</goal>
+                            <goal>display-plugin-updates</goal>
+                        </goals>
+                        <phase>validate</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-dependency-plugin</artifactId>
+      <version>3.8.1</version>
+      <executions>
+        <execution>
+          <id>copy-dependencies</id>
+          <phase>process-resources</phase>
+          <goals>
+            <goal>copy-dependencies</goal>
+          </goals>
+          <configuration>
+            <outputDirectory>./libs</outputDirectory>
+            <includeScope>compile</includeScope>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+        <plugin>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-maven-plugin</artifactId>
+          <extensions>true</extensions>
+      <configuration>
+        <instructions>
+          <Bundle-SymbolicName>b4e.common</Bundle-SymbolicName>
+          <Bundle-Version>0.5.0.qualifier</Bundle-Version>
+          <Bundle-Name>QDZ Bundeled4Eclipse Common Jars</Bundle-Name>
+          <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+          <Embed-Transitive>true</Embed-Transitive>
+        </instructions>
+      </configuration>
+        </plugin>
+        <!--
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>6.0.0</version>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Bundle-SymbolicName>b4e.common</Bundle-SymbolicName>
+            <Bundle-Version>0.5.0.qualifier</Bundle-Version>
+            <Bundle-Name>QDZ Bundeled4Eclipse Common Jars</Bundle-Name>
+
+            
+            <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+            <Embed-Transitive>true</Embed-Transitive>
+          </instructions>
+
+        </configuration>
+      </plugin>
+      -->
+    </plugins>
+  </build>
+
+</project>

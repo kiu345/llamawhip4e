@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-1.4.0-SNAPSHOT.jar" sourcepath="/langchain4j/src/main/java"/>
-	<classpathentry exported="true" kind="lib" path="jars/langchain4j-code-execution-engine-graalvm-polyglot-1.4.0-beta10-SNAPSHOT.jar" sourcepath="/langchain4j-code-execution-engine-graalvm-polyglot/src/main/java"/>
-	<classpathentry exported="true" kind="lib" path="jars/langchain4j-code-execution-engine-judge0-1.4.0-beta10-SNAPSHOT.jar" sourcepath="/langchain4j-code-execution-engine-judge0/src/main/java"/>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-core-1.4.0-SNAPSHOT.jar" sourcepath="/langchain4j-core/src/main/java"/>
+	<classpathentry exported="true" kind="lib" path="jars/langchain4j-code-execution-engine-graalvm-polyglot-1.4.0-beta10-SNAPSHOT.jar" sourcepath="/langchain4j-code-execution-engine-graalvm-polyglot/src/main/java"/>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-document-loader-amazon-s3-1.4.0-beta10-SNAPSHOT.jar" sourcepath="/langchain4j-document-loader-amazon-s3/src/main/java"/>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-document-loader-azure-storage-blob-1.4.0-beta10-SNAPSHOT.jar" sourcepath="/langchain4j-document-loader-azure-storage-blob/src/main/java"/>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-document-loader-github-1.4.0-beta10-SNAPSHOT.jar" sourcepath="/langchain4j-document-loader-github/src/main/java"/>
+	<classpathentry exported="true" kind="lib" path="jars/langchain4j-document-loader-playwright-1.4.0-beta10-SNAPSHOT.jar"/>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-document-parser-apache-pdfbox-1.4.0-beta10-SNAPSHOT.jar" sourcepath="/langchain4j-document-parser-apache-pdfbox/src/main/java"/>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-document-parser-apache-poi-1.4.0-beta10-SNAPSHOT.jar" sourcepath="/langchain4j-document-parser-apache-poi/src/main/java"/>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-document-parser-apache-tika-1.4.0-beta10-SNAPSHOT.jar" sourcepath="/langchain4j-document-parser-apache-tika/src/main/java"/>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-document-transformer-jsoup-1.4.0-beta10-SNAPSHOT.jar" sourcepath="/langchain4j-document-transformer-jsoup/src/main/java"/>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-embedding-store-filter-parser-sql-1.4.0-beta10-SNAPSHOT.jar" sourcepath="/langchain4j-embedding-store-filter-parser-sql/src/main/java"/>
+	<classpathentry exported="true" kind="lib" path="jars/langchain4j-vespa-1.4.0-beta10-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/langchain4j-azure-open-ai-1.4.0-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/langchain4j-easy-rag-1.4.0-beta10-SNAPSHOT.jar"/>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-github-models-1.4.0-beta10-SNAPSHOT.jar" sourcepath="/langchain4j-github-models/src/main/java"/>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-http-client-1.4.0-SNAPSHOT.jar" sourcepath="/langchain4j-http-client/src/main/java"/>
 	<classpathentry exported="true" kind="lib" path="jars/langchain4j-http-client-jdk-1.4.0-SNAPSHOT.jar" sourcepath="/langchain4j-http-client-jdk/src/main/java"/>
