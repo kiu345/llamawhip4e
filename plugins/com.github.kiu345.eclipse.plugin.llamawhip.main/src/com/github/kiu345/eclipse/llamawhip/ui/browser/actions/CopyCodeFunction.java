@@ -1,4 +1,4 @@
-package com.github.kiu345.eclipse.eclipseai.ui.actions;
+package com.github.kiu345.eclipse.llamawhip.ui.browser.actions;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swt.browser.Browser;

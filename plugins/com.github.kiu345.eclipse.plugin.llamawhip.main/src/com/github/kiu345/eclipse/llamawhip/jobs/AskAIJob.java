@@ -1,4 +1,4 @@
-package com.github.kiu345.eclipse.eclipseai.ui.jobs;
+package com.github.kiu345.eclipse.llamawhip.jobs;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;

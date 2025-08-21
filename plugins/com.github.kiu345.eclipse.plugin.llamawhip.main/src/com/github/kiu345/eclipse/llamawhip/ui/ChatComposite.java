@@ -1,5 +1,7 @@
 package com.github.kiu345.eclipse.llamawhip.ui;
 
+import static com.github.kiu345.eclipse.llamawhip.ui.browser.BrowserScripting.script;
+
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -29,14 +31,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.PlatformUI;
 
-import com.github.kiu345.eclipse.eclipseai.ui.BrowserScripting;
-import com.github.kiu345.eclipse.eclipseai.ui.BrowserScripting.ScriptException;
-import com.github.kiu345.eclipse.eclipseai.ui.actions.CopyCodeFunction;
-import com.github.kiu345.eclipse.eclipseai.ui.actions.SaveCodeFunction;
-import com.github.kiu345.eclipse.eclipseai.ui.actions.SendPromptFunction;
 import com.github.kiu345.eclipse.eclipseai.ui.attachment.FileAttachment;
 import com.github.kiu345.eclipse.eclipseai.ui.dnd.DropManager;
-import com.github.kiu345.eclipse.eclipseai.ui.util.ComboBoxIdSelectionListener;
 import com.github.kiu345.eclipse.llamawhip.Activator;
 import com.github.kiu345.eclipse.llamawhip.adapter.ModelDescriptor;
 import com.github.kiu345.eclipse.llamawhip.adapter.ModelDescriptor.Features;
@@ -48,11 +44,15 @@ import com.github.kiu345.eclipse.llamawhip.messaging.ToolsMsg;
 import com.github.kiu345.eclipse.llamawhip.messaging.UserMsg;
 import com.github.kiu345.eclipse.llamawhip.messaging.Msg.Source;
 import com.github.kiu345.eclipse.llamawhip.prompt.MessageParser;
+import com.github.kiu345.eclipse.llamawhip.ui.browser.BrowserScripting;
+import com.github.kiu345.eclipse.llamawhip.ui.browser.BrowserScripting.ScriptException;
+import com.github.kiu345.eclipse.llamawhip.ui.browser.actions.CopyCodeFunction;
+import com.github.kiu345.eclipse.llamawhip.ui.browser.actions.SaveCodeFunction;
+import com.github.kiu345.eclipse.llamawhip.ui.browser.actions.SendPromptFunction;
+import com.github.kiu345.eclipse.llamawhip.ui.util.ComboBoxIdSelectionListener;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
-
-import static com.github.kiu345.eclipse.eclipseai.ui.BrowserScripting.script;
 
 /**
  * The {@code ChatComposite} class provides a rich user interface component for interacting with an AI chat

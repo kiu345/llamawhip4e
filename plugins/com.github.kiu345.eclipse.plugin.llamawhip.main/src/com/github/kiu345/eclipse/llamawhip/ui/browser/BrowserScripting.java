@@ -1,4 +1,4 @@
-package com.github.kiu345.eclipse.eclipseai.ui;
+package com.github.kiu345.eclipse.llamawhip.ui.browser;
 
 import java.io.IOException;
 import java.io.InputStream;

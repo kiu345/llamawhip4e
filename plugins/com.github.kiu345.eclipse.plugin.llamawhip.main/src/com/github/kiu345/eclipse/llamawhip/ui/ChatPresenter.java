@@ -22,17 +22,17 @@ import org.eclipse.ui.PlatformUI;
 
 import com.github.kiu345.eclipse.eclipseai.services.tools.ToolService;
 import com.github.kiu345.eclipse.eclipseai.ui.attachment.FileAttachment;
-import com.github.kiu345.eclipse.eclipseai.ui.jobs.AskAIJob;
-import com.github.kiu345.eclipse.eclipseai.ui.util.IDEUtils;
 import com.github.kiu345.eclipse.llamawhip.adapter.ChatAdapterFactory;
 import com.github.kiu345.eclipse.llamawhip.adapter.ModelDescriptor;
 import com.github.kiu345.eclipse.llamawhip.config.ChatSettings;
 import com.github.kiu345.eclipse.llamawhip.config.ModelManager;
 import com.github.kiu345.eclipse.llamawhip.config.PluginConfiguration;
+import com.github.kiu345.eclipse.llamawhip.jobs.AskAIJob;
 import com.github.kiu345.eclipse.llamawhip.messaging.ConversationManager;
 import com.github.kiu345.eclipse.llamawhip.messaging.Msg;
 import com.github.kiu345.eclipse.llamawhip.messaging.UserMsg;
 import com.github.kiu345.eclipse.llamawhip.ui.ChatComposite.State;
+import com.github.kiu345.eclipse.llamawhip.ui.util.IDEUtils;
 
 import jakarta.inject.Inject;
 

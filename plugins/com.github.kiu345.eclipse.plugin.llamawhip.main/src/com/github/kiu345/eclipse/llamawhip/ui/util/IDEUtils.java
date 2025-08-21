@@ -1,4 +1,4 @@
-package com.github.kiu345.eclipse.eclipseai.ui.util;
+package com.github.kiu345.eclipse.llamawhip.ui.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
